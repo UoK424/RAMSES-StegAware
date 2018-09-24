@@ -41,4 +41,5 @@ This file path is relevant for any files that make use of the video steganalysis
 java -jar StegExpose.jar /home/user/Desktop/TestImages >> /home/user/Desktop/Ramses/Results/ImageAnalysis.txt 
 
 
+
 *Refer to StegAware user manual for full details
