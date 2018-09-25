@@ -34,7 +34,7 @@ while s != '3':
 				invest = input('\nPlease input the name of the malware that your investigation is focused on (leave blank if none): ')
 				while True:
 					privacy = input('Please type public, agency or private to set the privacy level of uploaded entries: ')
-					if ((privacy == 'public') or (privacy == 'private') or (private == 'agency')):
+					if ((privacy == 'public') or (privacy == 'private') or (privacy == 'agency')):
 						break
 					else:
 						print('Please input a valid privacy setting.')
@@ -131,7 +131,7 @@ while s != '3':
 									
 				while True:
 					privacy = input('Please type public, agency or private to set the privacy level of uploaded entries: ')
-					if ((privacy == 'public') or (privacy == 'private') or (private == 'agency')):
+					if ((privacy == 'public') or (privacy == 'private') or (privacy == 'agency')):
 						break
 					else:
 						print('Please input a valid privacy setting.')
