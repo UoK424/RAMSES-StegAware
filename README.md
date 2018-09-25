@@ -14,6 +14,8 @@ The tool is available as open-source on GitHub from the following link.
 
 https://github.com/UoK424/RAMSES_StegAware
 
+You will need appropriate privileges for the 'stegtool.py' and 'Ramses.sh' scripts. Please set these accordingly using 'chmod'. 
+
 ExifTool – The metadata forensics feature of this tool makes use of ‘ExifTool’. This is a free, open-source program for reading, writing, and manipulating file metadata. The RAMSES steganalytic tool uses these features to extract relevant metadata from video and image files. This can be installed from the following command:
 
 $ sudo apt install libimage-exiftool-perl
