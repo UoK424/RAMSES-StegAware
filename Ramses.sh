@@ -57,4 +57,3 @@ source ~/Desktop/Ramses/Results/mergeReport.sh
 
 rm *.txt ~/Desktop/Ramses/Results/ 2> /dev/null
 rm tempStegReport.csv Results/ 2> /dev/null
-
