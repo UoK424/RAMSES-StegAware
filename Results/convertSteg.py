@@ -11,7 +11,7 @@ for filename in glob.glob('*.txt'):
 
 		stripped = tuple(line.strip() for line in in_file)
 		lines = (line for line in stripped if line)
-		grouped = list(itertools.izip(*[lines] * 3))
+		grouped = list(zip(*[lines] * 3))
 			
 		if os.path.isfile('tempStegReport.csv'):
 			#print('Yes file')
