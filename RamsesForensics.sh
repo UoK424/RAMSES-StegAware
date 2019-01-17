@@ -19,7 +19,7 @@ date +%s | echo $RANDOM | sha512sum | head -c 32 >> ~/Desktop/Ramses/Results/For
 echo >> ~/Desktop/Ramses/Results/Forensics.txt
 
 cd ~/Desktop/Ramses/Results
-python convertVideo.py
+python3 convertVideo.py
 
 else
 
@@ -33,7 +33,7 @@ date +%s | echo $RANDOM | sha512sum | head -c 32 >> ~/Desktop/Ramses/Results/For
 echo >> ~/Desktop/Ramses/Results/Forensics.txt
 
 cd ~/Desktop/Ramses/Results
-python convertImage.py
+python3 convertImage.py
 
 fi
 
@@ -45,8 +45,6 @@ dh=$(echo "$dt2/3600" | bc)
 dt3=$(echo "$dt2-3600*$dh" | bc)
 dm=$(echo "$dt3/60" | bc)
 ds=$(echo "$dt3-60*$dm" | bc)
-
-
 
 printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
 

@@ -49,7 +49,7 @@ fi
 
 cd ~/Desktop/Ramses/Results/
 
-python convertSteg.py
+python3 convertSteg.py
 
 cp tempStegReport.csv StegReport.csv
 
