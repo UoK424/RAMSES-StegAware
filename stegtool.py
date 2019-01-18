@@ -164,31 +164,6 @@ while s != '3':
 						print(str(r)+' : '+str(id))
 						print('1 entry deleted from the RAMSES platform')
 
-					subprocess.call('./Ramses.sh')
-					time.sleep(1)
-					
-					c = 0
-					c2 = 0
-					results = utils.local_res_parser('Results/paste.csv',privacy,invest)
-					exists = swag.scan_list(token,usrid)
-
-					print('Existing records scanned')
-
-					for i in results:
-						if not any((d.get('image_hash',None) == i.get('image_hash',None)) for d in exists):
-							c = c+1
-							r = swag.post_result(token, i)
-							print('New record: '+str(r)+' : '+str(i.get('image_hash',None)))
-						elif any((d.get('image_hash',None) == i.get('image_hash',None)) for d in exists) and (i.get('steg_algorithm', None) != 'None'):
-							#print(i.get('steg_algorithm',None))
-							c2 = c2+1
-							r = swag.update_result(token, i, str(i.get('id',None)))
-							print('Updated '+str(r)+' : '+str(i.get('image_hash',None)))
-						else:
-							print('Duplicate record not updated.')
-
-					print(str(c) + ' unique new entries and ' + str(c2) + ' updates pushed to RAMSES platform')
-
 				elif (sel == '4'):
 					print('Exiting to top level menu')
 					break

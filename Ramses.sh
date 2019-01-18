@@ -32,17 +32,11 @@ do
 		break
 	elif [ "$RAMSESopt" == "0" ]
 	then
-		break
+		exit 0
 	else
 		clear
 	fi
 done
-
-#echo -n "Please give the filepath of videos for analysis: "
-#read filepath $filepath
-#source /home/ts424/Desktop/Ramses/Forensic.sh
-#source /home/ts424/Desktop/Ramses/OpenPuff/OPStart.sh
-#source /home/ts424/Desktop/Ramses/Steganosaurus/SaurusScanner.sh
 
 function finish {
 rm /tmp/tmp1 2> /dev/null
