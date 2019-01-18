@@ -17,23 +17,28 @@ do
 
 	if [ "$RAMSESopt" == "1" ]
 	then
+		unset RAMSESopt
 		clear
 		source RamsesVideo.sh
 		break
 	elif [ "$RAMSESopt" == "2" ]
 	then
+		unset RAMSESopt
 		clear
 		source RamsesImage.sh
 		break
 	elif [ "$RAMSESopt" == "3" ] 
 	then
+		unset RAMSESopt
 		clear
 		source RamsesForensics.sh
 		break
 	elif [ "$RAMSESopt" == "0" ]
 	then
+		unset RAMSESopt
 		exit 0
 	else
+		unset RAMSESopt
 		clear
 	fi
 done
