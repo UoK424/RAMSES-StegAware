@@ -9,21 +9,34 @@ LC_COLLATE=C
 
 #filepath=~/Desktop/Ramses/TestMediaRam/*
 
-echo -e "Welcome to RAMSES, please choose an option"
-echo -e "\n 1: Video Analysis \n" "2: Image Analysis \n" "3: Metadata Forensics \n" "0: Exit \n"
-read -p 'Input: ' RAMSESopt $RAMSESopt
+while true
+do
+	echo -e "Welcome to RAMSES, please choose an option"
+	echo -e "\n 1: Video Analysis \n" "2: Image Analysis \n" "3: Metadata Forensics \n" "0: Exit \n"
+	read -p 'Input: ' RAMSESopt $RAMSESopt
 
-if [ "$RAMSESopt" == "1" ]; then
-clear
-source RamsesVideo.sh
-elif [ "$RAMSESopt" == "2" ]; then
-clear
-source RamsesImage.sh
-elif [ "$RAMSESopt" == "3" ]; then
-clear
-source RamsesForensics.sh
-elif [ "$RAMSESopt" == "0" ]; then
-clear
+	if [ "$RAMSESopt" == "1" ]
+	then
+		clear
+		source RamsesVideo.sh
+		break
+	elif [ "$RAMSESopt" == "2" ]
+	then
+		clear
+		source RamsesImage.sh
+		break
+	elif [ "$RAMSESopt" == "3" ] 
+	then
+		clear
+		source RamsesForensics.sh
+		break
+	elif [ "$RAMSESopt" == "0" ]
+	then
+		break
+	else
+		clear
+	fi
+done
 
 #echo -n "Please give the filepath of videos for analysis: "
 #read filepath $filepath
@@ -41,11 +54,6 @@ rm *.txt Results/ 2> /dev/null
 }
 
 trap finish EXIT 
-
-else
-
-exit 0
-fi
 
 cd ~/Desktop/Ramses/Results/
 
