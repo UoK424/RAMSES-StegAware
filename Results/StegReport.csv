@@ -1,6 +1,4 @@
 Steg_Algorithm,Steg_Present,Steg_Signature
-<<<<<<< HEAD
-=======
 Pixelknot Steganography,yes,ffe000104a464946000101000001
 Pixelknot Steganography,yes,ffe000104a464946000101000001
 Pixelknot Steganography,yes,ffe000104a464946000101000001
@@ -11,7 +9,6 @@ Pixelknot Steganography,yes,ffe000104a464946000101000001
 Pixelknot Steganography,yes,ffe000104a464946000101000001
 Pixelknot Steganography,yes,ffe000104a464946000101000001
 Pixelknot Steganography,yes,ffe000104a464946000101000001
->>>>>>> bfaa80a914a84dea982effbc98750fc17dbd6430
 None,None,None
 None,None,None
 None,None,None
@@ -22,15 +19,8 @@ None,None,None
 None,None,None
 None,None,None
 None,None,None
-<<<<<<< HEAD
-OpenPuff Steganography,yes,Flag Modification
-OpenPuff Steganography,yes,Flag Modification
-OpenPuff Steganography,yes,Flag Modification
-None,None,None
-=======
 None,None,None
 None,None,None
-LSB Steganography,yes,Statistical Steganalysis
-LSB Steganography,yes,Statistical Steganalysis
-LSB Steganography,yes,Statistical Steganalysis
->>>>>>> bfaa80a914a84dea982effbc98750fc17dbd6430
+None,None,None
+None,None,None
+None,None,None

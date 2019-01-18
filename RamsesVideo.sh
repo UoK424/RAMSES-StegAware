@@ -66,7 +66,7 @@ do
 		exit 0
 
 	else
-		echo "Incorrect input, please try again.\n"
+		echo "Incorrect input, please try again."
 		unset VIDopt
 	fi
 done

@@ -40,7 +40,7 @@ do
 		exit 0
 
 	else	
-		echo "Invalid input, please try again\n"
+		echo "Invalid input, please try again."
 		unset IMAGEopt
 	fi
 done
