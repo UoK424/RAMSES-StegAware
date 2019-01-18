@@ -53,7 +53,10 @@ class PlatformMF:
                         self.token_refresh = response_dict['refresh_token']
                         self.refresh_expires_in = time.time() + response_dict['refresh_expires_in']
                         self.session_state = response_dict['session_state']
+<<<<<<< HEAD
                         print(self.token_expires_in)
+=======
+>>>>>>> bfaa80a914a84dea982effbc98750fc17dbd6430
                         self.isLogin = True
                         #ToDo Change to get this parameter
                         self.platform_user_id = '6161f370-bdc1-4d15-bf3b-aba59d58d259'
@@ -501,6 +504,10 @@ if __name__ == '__main__':
         print result
     else:
         print details[0],details[1]
+<<<<<<< HEAD
+=======
+
+>>>>>>> bfaa80a914a84dea982effbc98750fc17dbd6430
     # print platform.get_specific_authorship_information(id)
     # print platform.update_authorship_information(id, d)
     # print platform.delete_authorship_information(id)
