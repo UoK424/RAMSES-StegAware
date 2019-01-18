@@ -1,3 +1,6 @@
+# Swagger API Reference: https://ramses.treelogic.com/ramses-1.0.0/swagger-ui.html#!/steganography45controller/getResultbyIdUsingGET
+# INtegration Guide: https://docs.google.com/document/d/1ilqehwkQdfhgymgvWMyZFWwp0jc_wfLF3CDrXCfzAlk/edit#
+
 import stegtool_swagger_wrapper as swag
 import stegtool_utils as utils
 import struct
@@ -11,6 +14,15 @@ print('RAMSES Steg Tool Version 0.9 beta')
 sel = 0
 s = 0
 s2 = 0
+
+usrnm = input('User Name: ')
+password = input('Password: ')
+
+access_cred = swag.authenticate(usrnm,password).content
+access_cred = json.loads(access_cred.decode())
+token = access_cred["access_token"]
+usrid = "986a8a37-6d96-4a04-b50d-8ef7fcc40137"
+password = ''
 
 while s != '3':
 	print('\n')
@@ -42,20 +54,10 @@ while s != '3':
 				subprocess.call('./Ramses.sh')
 				time.sleep(1)
 				
-				usrnm = input('User Name: ')
-				password = input('Password: ')
-
-				access_cred = swag.authenticate(usrnm,password).content
-				#print(access_cred)
-				access_cred = json.loads(access_cred.decode())
-				token = access_cred["access_token"]
-				password = ''
-				#print(token)
-				
 				c = 0
 				c2 = 0
 				results = utils.local_res_parser('Results/paste.csv',privacy,invest)
-				exists = swag.scan_list(token)
+				exists = swag.scan_list(token,usrid)
 
 				print('Existing records scanned')
 
@@ -96,17 +98,7 @@ while s != '3':
 			sel = input('Selection: ')
 
 			if (sel == '1'):       
-				usrnm = input('User Name: ')
-				password = input('Password: ')
-
-				access_cred = swag.authenticate(usrnm,password).content
-				#print(access_cred)
-				access_cred = json.loads(access_cred.decode())
-				token = access_cred["access_token"]
-				password = ''
-				#print(token)
-
-				r = swag.scan_list(token)
+				r = swag.scan_list(token,usrid)
 				c = utils.plat_to_csv(r)
 				print(str(len(r))+' records retrieved and '+str(c)+' saved to "ramses_steg_remote.csv"')
 
@@ -136,18 +128,8 @@ while s != '3':
 					else:
 						print('Please input a valid privacy setting.')
 						
-				usrnm = input('User Name: ')
-				password = input('Password: ')
-
-				access_cred = swag.authenticate(usrnm,password).content
-				#print(access_cred)
-				access_cred = json.loads(access_cred.decode())
-				token = access_cred["access_token"]
-				password = ''
-				#print(token)
-						
 				results = utils.local_res_parser(f,privacy,invest)
-				exists = swag.scan_list(token)
+				exists = swag.scan_list(token,usrid)
 
 				print('Existing records scanned')
 
@@ -187,20 +169,11 @@ while s != '3':
 #					print(resp)
 
 			elif (sel == '3'):
-				usrnm = input('User Name: ')
-				password = input('Password: ')
-
-				access_cred = swag.authenticate(usrnm,password).content
-				#print(access_cred)
-				access_cred = json.loads(access_cred.decode())
-				token = access_cred["access_token"]
-				password = ''
-				#print(token)
 				
 				c = 0
 				id = input('Input file id to delete (all deletes all): ')
 				if id == 'all':
-					r = swag.scan_list(token)
+					r = swag.scan_list(token,usrid)
 					for i in r:
 						c = c+1
 						resp = swag.delete_result(token,str(i.get('id',None)))
