@@ -1,6 +1,5 @@
 import requests
 import json
-import jwt
 
 def authenticate (usrnm, password):
 	url = 'https://ramses.treelogic.com/auth/realms/ramses/protocol/openid-connect/token'
