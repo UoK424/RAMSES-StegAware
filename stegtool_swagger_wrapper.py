@@ -1,21 +1,23 @@
 import requests
 import json
+import jwt
 
 def authenticate (usrnm, password):
-        url = 'https://ramses.treelogic.com/auth/realms/ramses/protocol/openid-connect/token'
-        headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        }
-        data = [
-          ('client_id', 'desktopapps-cli'),
-          ('username', usrnm),
-          ('password', password),
-          ('client_secret', 'e32d1260-4724-4148-aefd-d9df677ecd78'),
-          ('grant_type', 'password'),
-        ]
+	url = 'https://ramses.treelogic.com/auth/realms/ramses/protocol/openid-connect/token'
+	headers = {
+	'Content-Type': 'application/x-www-form-urlencoded',
+	}
+	data = [
+	('client_id', 'desktopapps-cli'),
+	('username', usrnm),
+	('password', password),
+	('client_secret', 'e32d1260-4724-4148-aefd-d9df677ecd78'),
+	('grant_type', 'password'),
+	]
         
-        r = requests.post(url, headers=headers, data=data)
-        return r
+	r = requests.post(url, headers=headers, data=data)
+		
+	return r
 
 def get_list (token,params):
         headers = {

@@ -9,6 +9,7 @@ import ast
 import subprocess
 import time
 import getpass
+import base64
 
 print('RAMSES Steg Tool Version 0.95 beta')
 
@@ -22,12 +23,18 @@ while True:
 
 	temp = swag.authenticate(usrnm,password)
 	access_cred = temp.content
+	#print(access_cred)
 	#print(temp.status_code)
 
 	if (temp.status_code == 200):
 		access_cred = json.loads(access_cred.decode())
 		token = access_cred["access_token"]
-		usrid = "986a8a37-6d96-4a04-b50d-8ef7fcc40137"
+		token_split = token.split('.')[1];
+		x = json.loads(base64.b64decode(token_split + "=" * ((4 - len(token_split) % 4) % 4)))
+		print(x)
+		usrid = x['sub']	
+		print(usrid)
+		#usrid = "986a8a37-6d96-4a04-b50d-8ef7fcc40137"
 		password = ''
 		break
 	else:
