@@ -1,6 +1,6 @@
 #!/bin/bash
 LC_COLLATE=C
-filepath=~/Desktop/Ramses/TestMediaRam/Video/*
+filepath=/home/darren/RAMSES_StegAware/TestMediaRam/Video/*
 
 while true
 do
@@ -10,47 +10,47 @@ do
 	read -p 'Input: ' VIDopt $VIDopt
 
 	if [ "$VIDopt" == "1" ]; then
-		source ~/Desktop/Ramses/EOF/EOFScanner.sh
-		source ~/Desktop/Ramses/OpenPuff/OPStart.sh
-		source ~/Desktop/Ramses/OurSecret/OSScanner.sh
-		source ~/Desktop/Ramses/OmniHide/OHScanner.sh
-		source ~/Desktop/Ramses/BDV/BDVScanner.sh
-		#source ~/Desktop/Ramses/Steganosaurus/SaurusScanner.sh
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/EOF/EOFScanner.sh
+		source /home/darren/RAMSES_StegAware/OpenPuff/OPStart.sh
+		source /home/darren/RAMSES_StegAware/OurSecret/OSScanner.sh
+		source /home/darren/RAMSES_StegAware/OmniHide/OHScanner.sh
+		source /home/darren/RAMSES_StegAware/BDV/BDVScanner.sh
+		#source /home/darren/RAMSES_StegAware/Steganosaurus/SaurusScanner.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 
 	elif [ "$VIDopt" == "2" ]; then
-		source ~/Desktop/Ramses/EOF/EOFScanner.sh
+		source /home/darren/RAMSES_StegAware/EOF/EOFScanner.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 		break
 
 	elif [ "$VIDopt" == "3" ]; then
-		source ~/Desktop/Ramses/OpenPuff/OPStart.sh
+		source /home/darren/RAMSES_StegAware/OpenPuff/OPStart.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 		break
 
 	elif [ "$VIDopt" == "4" ]; then
-		source ~/Desktop/Ramses/OurSecret/OSScanner.sh
+		source /home/darren/RAMSES_StegAware/OurSecret/OSScanner.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 		break
 
 	elif [ "$VIDopt" == "5" ]; then
-		source ~/Desktop/Ramses/OmniHide/OHScanner.sh
+		source /home/darren/RAMSES_StegAware/OmniHide/OHScanner.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 		break
 
 	elif [ "$VIDopt" == "6" ]; then
-		source ~/Desktop/Ramses/BDV/BDVScanner.sh
+		source /home/darren/RAMSES_StegAware/BDV/BDVScanner.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 
 		#elif [ "$VIDopt" == "7" ]; then
-		#source ~/Desktop/Ramses/Steganosaurus/SaurusScanner.sh
+		#source /home/darren/RAMSES_StegAware/Steganosaurus/SaurusScanner.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 		break
 
 	elif [ "$VIDopt" == "0" ]; then

@@ -7,13 +7,13 @@ filenum=$((filenum+1))
 xxd -p "${file}" > /tmp/tmp1
 	tr -d '\n' < /tmp/tmp1 > /tmp/tmp2
 	if grep -c -q -"9e97ba2a008088c9a370975ba2e499b8c178720f88dddc342b4e7d317fb5e87039a8b84275687191" /tmp/tmp2; then
-	echo -e "OurSecret Steganography">> ~/Desktop/Ramses/Results/OurSecret.txt
-	echo -e "yes" >> ~/Desktop/Ramses/Results/OurSecret.txt
-	echo -e "9e97ba2a008088c9a370975ba2e499b8c178720f88dddc342b4e7d317fb5e87039a8b84275687191" >> ~/Desktop/Ramses/Results/OurSecret.txt
+	echo -e "OurSecret Steganography">> /home/darren/RAMSES_StegAware/Results/OurSecret.txt
+	echo -e "yes" >> /home/darren/RAMSES_StegAware/Results/OurSecret.txt
+	echo -e "9e97ba2a008088c9a370975ba2e499b8c178720f88dddc342b4e7d317fb5e87039a8b84275687191" >> /home/darren/RAMSES_StegAware/Results/OurSecret.txt
 	else
-	echo -e "None">> ~/Desktop/Ramses/Results/OurSecret.txt
-	echo -e "None">> ~/Desktop/Ramses/Results/OurSecret.txt
-	echo -e "None">> ~/Desktop/Ramses/Results/OurSecret.txt
+	echo -e "None">> /home/darren/RAMSES_StegAware/Results/OurSecret.txt
+	echo -e "None">> /home/darren/RAMSES_StegAware/Results/OurSecret.txt
+	echo -e "None">> /home/darren/RAMSES_StegAware/Results/OurSecret.txt
 
 fi
 

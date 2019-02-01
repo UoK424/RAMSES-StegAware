@@ -20,21 +20,21 @@ if [[ $test == $catch2 ]]
 	
 	if [[ $test == $catch1 ]]
 		then
-		echo -e "None" >> ~/Desktop/Ramses/Results/EOF.txt
-		echo -e "None" >> ~/Desktop/Ramses/Results/EOF.txt
-		echo -e "None" >> ~/Desktop/Ramses/Results/EOF.txt
+		echo -e "None" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
+		echo -e "None" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
+		echo -e "None" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
 		trap finish EXIT
 	else
-		echo -e "EOF Steganography" >> ~/Desktop/Ramses/Results/EOF.txt
-		echo -e "yes" >> ~/Desktop/Ramses/Results/EOF.txt
-		echo -e "EOF Injection" >> ~/Desktop/Ramses/Results/EOF.txt
+		echo -e "EOF Steganography" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
+		echo -e "yes" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
+		echo -e "EOF Injection" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
 
 	fi
 	
 else
-	echo -e "None" >> ~/Desktop/Ramses/Results/EOF.txt
-	echo -e "None" >> ~/Desktop/Ramses/Results/EOF.txt
-	echo -e "None" >> ~/Desktop/Ramses/Results/EOF.txt
+	echo -e "None" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
+	echo -e "None" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
+	echo -e "None" >> /home/darren/RAMSES_StegAware/Results/EOF.txt
 	
 fi
 

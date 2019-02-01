@@ -10,13 +10,13 @@ xxd -p "${file}" > /tmp/tmp1
 tr -d '\n' < /tmp/tmp1 > /tmp/tmp2
 tac /tmp/tmp2 > /tmp/tmp3
 if grep -q -E -m1 \(20\)\{140,\} /tmp/tmp3; then
-echo -e \ "OmniHide steganography found" >> ~/Desktop/Ramses/Results/OmniHidePro.txt
-echo -e "yes" >> ~/Desktop/Ramses/Results/OmniHidePro.txt
-echo -e "EOF Injection" >> ~/Desktop/Ramses/Results/OmniHidePro.txt
+echo -e \ "OmniHide steganography found" >> /home/darren/RAMSES_StegAware/Results/OmniHidePro.txt
+echo -e "yes" >> /home/darren/RAMSES_StegAware/Results/OmniHidePro.txt
+echo -e "EOF Injection" >> /home/darren/RAMSES_StegAware/Results/OmniHidePro.txt
 else
-echo -e "None">> ~/Desktop/Ramses/Results/OmniHidePro.txt
-echo -e "None">> ~/Desktop/Ramses/Results/OmniHidePro.txt
-echo -e "None">> ~/Desktop/Ramses/Results/OmniHidePro.txt
+echo -e "None">> /home/darren/RAMSES_StegAware/Results/OmniHidePro.txt
+echo -e "None">> /home/darren/RAMSES_StegAware/Results/OmniHidePro.txt
+echo -e "None">> /home/darren/RAMSES_StegAware/Results/OmniHidePro.txt
 fi
 
 echo "OmniHide Scanner" "${file}"

@@ -1,5 +1,5 @@
 #!/bin/bash
-filepath=~/Desktop/Ramses/TestMediaRam/Image/*
+filepath=/home/darren/RAMSES_StegAware/TestMediaRam/Image/*
 res1=$(date +%s.%N)
 
 while true
@@ -10,21 +10,21 @@ do
 	read -p 'Input: ' IMAGEopt $IMAGEopt
 
 	if [ "$IMAGEopt" == "1" ]; then
-		source ~/Desktop/Ramses/Pixelknot/PKScanner.sh
-		source ~/Desktop/Ramses/StegExpose/StegExpose.sh
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/Pixelknot/PKScanner.sh
+		source /home/darren/RAMSES_StegAware/StegExpose/StegExpose.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 	break
 
 	elif [ "$IMAGEopt" == "2" ]; then
-		source ~/Desktop/Ramses/StegExpose/StegExpose.sh
+		source /home/darren/RAMSES_StegAware/StegExpose/StegExpose.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 	break
 
 	elif [ "$IMAGEopt" == "3" ]; then
-		source ~/Desktop/Ramses/Pixelknot/PKScanner.sh
+		source /home/darren/RAMSES_StegAware/Pixelknot/PKScanner.sh
 
-		source ~/Desktop/Ramses/RamsesForensics.sh
+		source /home/darren/RAMSES_StegAware/RamsesForensics.sh
 	break
 
 	elif [ "$IMAGEopt" == "0" ]; then
@@ -45,4 +45,4 @@ do
 	fi
 done
 
-rm ~/Desktop/Ramses/Results/Negatives 2> /dev/null
+rm /home/darren/RAMSES_StegAware/Results/Negatives 2> /dev/null

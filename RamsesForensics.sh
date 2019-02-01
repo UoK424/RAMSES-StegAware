@@ -10,29 +10,29 @@ if [ ${file: -4} == ".mp4" ] || [ ${file: -4} == ".MP4" ]
 
 then 
 
-exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate -Duration "${file}" >> ~/Desktop/Ramses/Results/Forensics.txt
+exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate -Duration "${file}" >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
 
-sha3sum -a 512 "${file}" | cut -d " " -f 1 >> ~/Desktop/Ramses/Results/Forensics.txt
+sha3sum -a 512 "${file}" | cut -d " " -f 1 >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
 
-echo $DATE >> ~/Desktop/Ramses/Results/Forensics.txt
-date +%s | echo $RANDOM | sha512sum | head -c 32 >> ~/Desktop/Ramses/Results/Forensics.txt
-echo >> ~/Desktop/Ramses/Results/Forensics.txt
+echo $DATE >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
+date +%s | echo $RANDOM | sha512sum | head -c 32 >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
+echo >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
 
-cd ~/Desktop/Ramses/Results
+cd /home/darren/RAMSES_StegAware/Results
 python3 convertVideo.py
 
 else
 
 
-exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate "${file}" >> ~/Desktop/Ramses/Results/Forensics.txt
+exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate "${file}" >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
 
-sha3sum -a 512 "${file}" | cut -d " " -f 1 >> ~/Desktop/Ramses/Results/Forensics.txt
-echo $DATE >> ~/Desktop/Ramses/Results/Forensics.txt 
+sha3sum -a 512 "${file}" | cut -d " " -f 1 >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
+echo $DATE >> /home/darren/RAMSES_StegAware/Results/Forensics.txt 
 
-date +%s | echo $RANDOM | sha512sum | head -c 32 >> ~/Desktop/Ramses/Results/Forensics.txt
-echo >> ~/Desktop/Ramses/Results/Forensics.txt
+date +%s | echo $RANDOM | sha512sum | head -c 32 >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
+echo >> /home/darren/RAMSES_StegAware/Results/Forensics.txt
 
-cd ~/Desktop/Ramses/Results
+cd /home/darren/RAMSES_StegAware/Results
 python3 convertImage.py
 
 fi
@@ -50,4 +50,4 @@ printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
 
 done
 
-rm ~/Desktop/Ramses/Results/Forensics.txt
+rm /home/darren/RAMSES_StegAware/Results/Forensics.txt

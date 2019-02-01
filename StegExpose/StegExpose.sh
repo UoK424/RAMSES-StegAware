@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd ~/Desktop/Ramses/StegExpose/
+cd /home/darren/RAMSES_StegAware/StegExpose/
 
-java -jar StegExpose.jar ~/Desktop/Ramses/TestMediaRam/Image >> ~/Desktop/Ramses/Results/ImageAnalysis.txt
+java -jar StegExpose.jar /home/darren/RAMSES_StegAware/TestMediaRam/Image >> /home/darren/RAMSES_StegAware/Results/ImageAnalysis.txt
 
 res2=$(date +%s.%N)
 dt=$(echo "$res2 - $res1" | bc)

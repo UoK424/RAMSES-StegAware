@@ -9,13 +9,13 @@ filenum=$((filenum+1))
 xxd -p "${file}" > /tmp/tmp1
 head -c 100 < /tmp/tmp1 > /tmp/tmp2
 	if grep -c -q "ffe000104a464946000101000001" /tmp/tmp2; then
-	echo -e "Pixelknot Steganography">> ~/Desktop/Ramses/Results/Pixelknot.txt
-	echo -e "yes" >> ~/Desktop/Ramses/Results/Pixelknot.txt
-	echo -e "ffe000104a464946000101000001" >> ~/Desktop/Ramses/Results/Pixelknot.txt
+	echo -e "Pixelknot Steganography">> /home/darren/RAMSES_StegAware/Results/Pixelknot.txt
+	echo -e "yes" >> /home/darren/RAMSES_StegAware/Results/Pixelknot.txt
+	echo -e "ffe000104a464946000101000001" >> /home/darren/RAMSES_StegAware/Results/Pixelknot.txt
 	else
-	echo -e "None">> ~/Desktop/Ramses/Results/Pixelknot.txt
-	echo -e "None">> ~/Desktop/Ramses/Results/Pixelknot.txt
-	echo -e "None">> ~/Desktop/Ramses/Results/Pixelknot.txt
+	echo -e "None">> /home/darren/RAMSES_StegAware/Results/Pixelknot.txt
+	echo -e "None">> /home/darren/RAMSES_StegAware/Results/Pixelknot.txt
+	echo -e "None">> /home/darren/RAMSES_StegAware/Results/Pixelknot.txt
 	
 
 fi
@@ -39,4 +39,4 @@ touch /tmp/tmp2
 
 done
 
-rm negatives ~/Desktop/Ramses/Results/ 2> /dev/null
+rm negatives /home/darren/RAMSES_StegAware/Results/ 2> /dev/null

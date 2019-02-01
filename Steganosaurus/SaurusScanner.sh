@@ -16,9 +16,9 @@ done
 
 if egrep -q "free|mdat" /tmp/tmp2; then
 #source /home/ts424/Desktop/Ramses/Steganosaurus/SaurusSig.sh
-echo -e \ "${file}" "Atom Test - Steganography found - running signature test"; source ~/Desktop/Ramses/Steganosaurus/SaurusSig.sh
+echo -e \ "${file}" "Atom Test - Steganography found - running signature test"; source /home/darren/RAMSES_StegAware/Steganosaurus/SaurusSig.sh
 else
-echo -e \ "${file}" "Atom Test - No Steganography found" >> ~/Desktop/Ramses/Results/Negatives
+echo -e \ "${file}" "Atom Test - No Steganography found" >> /home/darren/RAMSES_StegAware/Results/Negatives
 fi
 
 echo "Saurus Scanner""${file}"

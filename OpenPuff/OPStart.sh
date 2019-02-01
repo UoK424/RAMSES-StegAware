@@ -8,7 +8,7 @@ mp4file --dump "${file}" > /tmp/mp4dumpfile
 
 grep flag /tmp/mp4dumpfile >/tmp/tmp1
 
-source ~/Desktop/Ramses/OpenPuff/OPscanner.sh 
+source /home/darren/RAMSES_StegAware/OpenPuff/OPscanner.sh 
 
 echo "OpenPuff Scanner" "${file}"
 echo "$filenum" "files processed"

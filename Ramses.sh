@@ -7,8 +7,10 @@ rm Results/Forensics.txt 2> /dev/null
 
 LC_COLLATE=C
 
-#filepath=~/Desktop/Ramses/TestMediaRam/*
-
+#---------------------------------------------------
+#re-assigns all directory calls to this directory path
+source setup.sh
+#-------------------------------------------------
 while true
 do
 	echo -e "Welcome to RAMSES, please choose an option"
@@ -48,19 +50,19 @@ rm /tmp/tmp1 2> /dev/null
 rm /tmp/tmp2 2> /dev/null
 rm /tmp/tmp3 2> /dev/null
 rm /tmp/mp4dumpfile 2> /dev/null
-rm ~/Desktop/Ramses/Results/Forensics.txt 2> /dev/null
+rm /home/darren/RAMSES_StegAware/Results/Forensics.txt 2> /dev/null
 rm *.txt Results/ 2> /dev/null
 }
 
 trap finish EXIT 
 
-cd ~/Desktop/Ramses/Results/
+cd /home/darren/RAMSES_StegAware/Results/
 
 python3 convertSteg.py
 
 cp tempStegReport.csv StegReport.csv
 
-source ~/Desktop/Ramses/Results/mergeReport.sh
+source /home/darren/RAMSES_StegAware/Results/mergeReport.sh
 
-rm *.txt ~/Desktop/Ramses/Results/ 2> /dev/null
+rm *.txt /home/darren/RAMSES_StegAware/Results/ 2> /dev/null
 rm tempStegReport.csv Results/ 2> /dev/null

@@ -8,13 +8,13 @@ xxd -p "${file}" > /tmp/tmp1
 tr -d '\n' < /tmp/tmp1 > /tmp/tmp2
 if grep -c -q "fbead881250ff9" /tmp/tmp2; 
 then
-echo -e "BDV Steganography">> ~/Desktop/Ramses/Results/BDV.txt
-echo -e "yes" >> ~/Desktop/Ramses/Results/BDV.txt
-echo -e "fbead881250ff9" >> ~/Desktop/Ramses/Results/BDV.txt
+echo -e "BDV Steganography">> /home/darren/RAMSES_StegAware/Results/BDV.txt
+echo -e "yes" >> /home/darren/RAMSES_StegAware/Results/BDV.txt
+echo -e "fbead881250ff9" >> /home/darren/RAMSES_StegAware/Results/BDV.txt
 else
-echo -e "None">> ~/Desktop/Ramses/Results/BDV.txt
-echo -e "None">> ~/Desktop/Ramses/Results/BDV.txt
-echo -e "None">> ~/Desktop/Ramses/Results/BDV.txt
+echo -e "None">> /home/darren/RAMSES_StegAware/Results/BDV.txt
+echo -e "None">> /home/darren/RAMSES_StegAware/Results/BDV.txt
+echo -e "None">> /home/darren/RAMSES_StegAware/Results/BDV.txt
 fi
 
 echo "BDV Scanner" "${file}"
