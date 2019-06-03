@@ -3,8 +3,6 @@
 # Form implementation generated from reading ui file 'main_menu.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.2
-#
-# WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot, QObject
@@ -15,22 +13,22 @@ import middleware_steg
 class Ui_MainWindow(QObject):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        self.inpath = ""
-        self.outpath = ""
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(10, 20, 120, 80))
-        self.groupBox.setObjectName("groupBox")
-        self.checkBox = QtWidgets.QCheckBox(self.groupBox)
-        self.checkBox.setGeometry(QtCore.QRect(10, 30, 92, 23))
-        self.checkBox.setObjectName("checkBox")
-        self.checkBox_2 = QtWidgets.QCheckBox(self.groupBox)
-        self.checkBox_2.setGeometry(QtCore.QRect(10, 50, 92, 23))
-        self.checkBox_2.setObjectName("checkBox_2")
+        #self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
+        #self.groupBox.setGeometry(QtCore.QRect(10, 20, 120, 80))
+        #self.groupBox.setCheckable(True)
+        #self.groupBox.setObjectName("groupBox")
+        #self.checkBox = QtWidgets.QCheckBox(self.groupBox)
+        #self.checkBox.setGeometry(QtCore.QRect(10, 30, 92, 23))
+        #self.checkBox.setObjectName("checkBox")
+        #self.checkBox_2 = QtWidgets.QCheckBox(self.groupBox)
+        #self.checkBox_2.setGeometry(QtCore.QRect(10, 50, 92, 23))
+        #self.checkBox_2.setObjectName("checkBox_2")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(10, 190, 231, 361))
+        #self.groupBox_2.setCheckable(True)
         self.groupBox_2.setObjectName("groupBox_2")
         self.checkBox_3 = QtWidgets.QCheckBox(self.groupBox_2)
         self.checkBox_3.setGeometry(QtCore.QRect(10, 30, 111, 23))
@@ -40,6 +38,7 @@ class Ui_MainWindow(QObject):
         self.checkBox_4.setObjectName("checkBox_4")
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(250, 190, 241, 361))
+        #self.groupBox_3.setCheckable(True)
         self.groupBox_3.setObjectName("groupBox_3")
         self.checkBox_6 = QtWidgets.QCheckBox(self.groupBox_3)
         self.checkBox_6.setGeometry(QtCore.QRect(10, 30, 131, 23))
@@ -108,9 +107,9 @@ class Ui_MainWindow(QObject):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.groupBox.setTitle(_translate("MainWindow", "Media"))
-        self.checkBox.setText(_translate("MainWindow", "Video"))
-        self.checkBox_2.setText(_translate("MainWindow", "Image"))
+        #self.groupBox.setTitle(_translate("MainWindow", "Media"))
+        #self.checkBox.setText(_translate("MainWindow", "Video"))
+        #self.checkBox_2.setText(_translate("MainWindow", "Image"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Image Algorithms"))
         self.checkBox_3.setText(_translate("MainWindow", "StegExpose"))
         self.checkBox_4.setText(_translate("MainWindow", "PixelKnot "))
@@ -129,14 +128,31 @@ class Ui_MainWindow(QObject):
         
     @pyqtSlot( )
     def runTool( self ):
+        i_algo = []
+        v_algo = []
         prefix = self.lineEdit_3.text()
         
-        self.groupBox_3.toggled.connect(self.onToggled)
-        self.groupBox_2.toggled.connect(self.onToggled)
+        #check image steg algorithms to be used
+        if self.checkBox_3.isChecked() == True:
+            i_algo.append("StegExpose")        
+        if self.checkBox_4.isChecked() == True:
+            i_algo.append("PixelKnot")
             
-        run_tool(inpath,outpath,prefix,v_algo,i_algo)
+        #check video steg algorithms to be used
+        if self.checkBox_3.isChecked() == True:
+            v_algo.append("Generalised EOF")        
+        if self.checkBox_4.isChecked() == True:
+            v_algo.append("Openpuff")
+        if self.checkBox_3.isChecked() == True:
+            v_algo.append("BDV DataHider")        
+        if self.checkBox_4.isChecked() == True:
+            v_algo.append("OmniHide Pro")
+        if self.checkBox_3.isChecked() == True:
+            v_algo.append("OurSecret") 
         
-        refreshAll()
+        middleware_steg.run_tool(inpath,outpath,prefix,v_algo,i_algo)
+        
+        #refreshAll( self )
 
     @pyqtSlot( )
     def outSlot( self ):
@@ -146,7 +162,7 @@ class Ui_MainWindow(QObject):
         self.outpath = path
         self.lineEdit_4.setText(path)
         
-        refreshAll()
+        #refreshAll( self )
 
     @pyqtSlot( )
     def inSlot( self ):
@@ -156,7 +172,7 @@ class Ui_MainWindow(QObject):
         self.inpath = path
         self.lineEdit_5.setText(path)
         
-        refreshAll()
+        #refreshAll( self )
     
     def refreshAll( self ):
         '''
