@@ -14,6 +14,7 @@ import pyexifinfo as p
 import os
 import pandas as pd
 from OurSecret.OurSecret import ourSecret
+from Pixelknot.PixelKnot import pKnot
 
 
 def authenticate(usr,pswrd):
@@ -30,11 +31,11 @@ def run_tool(idir, odir, v_algo, i_algo):
 
 	for algo in v_algo:
 		if algo == 'OurSecret':
-			print('success!')
 			ourSecret(idir, odir, seshId)
 	
 	for algo in i_algo:
-		image_steg(idir, odir, seshId)
+		if algo == 'pKnot':
+		 	pKnot(idir, odir, seshId)
 
 	metadata(idir, odir, seshId)
 	results_merge(odir, seshId)

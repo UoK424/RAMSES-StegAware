@@ -17,7 +17,6 @@ def ourSecret(idir, odir, s):
         # print(len(f))
         with open(str(odir) + '/' + str(s) + '_stegResults.csv', mode='a') as results_file:
             csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            # csvwriter.writerow(['Filename', 'Steganography Present', 'Steganography Algorithm', 'Signature'])
             for file in f:
                 # print(file)
                 if '.MP4' or '.mp4' in file:
