@@ -3,15 +3,16 @@
 
 import stegtool_swagger_wrapper as swag
 import stegtool_utils as utils
-import struct
 import json
-import ast
-import subprocess
 import time
 import getpass
 import csv
 import base64
 import random
+import subprocess
+import pyexifinfo as p
+import os
+import pandas as pd
 from OurSecret.OurSecret import ourSecret
 
 
@@ -32,11 +33,34 @@ def run_tool(idir, odir, v_algo, i_algo):
 			print('success!')
 			ourSecret(idir, odir, seshId)
 	
-	if len(i_algo)>0:
-		for algo in i_algo:
-			image_steg(idir, odir, seshId)
+	for algo in i_algo:
+		image_steg(idir, odir, seshId)
 
-	
+	metadata(idir, odir, seshId)
+	results_merge(odir, seshId)
+
+
+def metadata(idir, odir, seshId):
+	metalist = []
+	for r, d, f in os.walk(idir):
+		for file in f:
+			print(file)
+			metalist.append(p.get_json(idir + '/' + file))
+
+	with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='w') as meta_file:
+		csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+		csvwriter.writerow(['Filename', 'file type', 'file size', 'file modify date', 'file access date', 'dimensions'])
+
+		for f in metalist:
+			csvwriter.writerow([f[0]['File:FileName'], f[0]['File:FileType'], f[0]['File:FileSize'], f[0]['File:FileModifyDate'], f[0]['File:FileAccessDate'], f[0]['Composite:ImageSize']])
+
+def results_merge(odir, seshId):
+	a = pd.read_csv(str(odir) + '/' + str(seshId) + '_metaData.csv')
+	b = pd.read_csv(str(odir) + '/' + str(seshId) + '_stegResults.csv')
+	merged = a.merge(b, on='Filename')
+	merged.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)
+
+
 # delete/comment everything below this line before running!
 def stuff(): 
 	print('RAMSES Steg Tool Version 0.95 beta')

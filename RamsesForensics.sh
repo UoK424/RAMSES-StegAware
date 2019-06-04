@@ -1,7 +1,6 @@
 #!/bin/bash
-res1=$(date +%s.%N)
-
-DATE=`date '+%Y:%m:%d %H:%M:%S'`
+filepath=$1
+odir=$2
 
 for file in $filepath
 do
@@ -10,43 +9,33 @@ if [ ${file: -4} == ".mp4" ] || [ ${file: -4} == ".MP4" ]
 
 then 
 
-exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate -Duration "${file}" >> ~/Desktop/Ramses/Results/Forensics.txt
+exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate -Duration "${file}" >> odir + /Forensics.txt
 
-sha3sum -a 512 "${file}" | cut -d " " -f 1 >> ~/Desktop/Ramses/Results/Forensics.txt
+sha3sum -a 512 "${file}" | cut -d " " -f 1 >> odir + /Forensics.txt
 
-echo $DATE >> ~/Desktop/Ramses/Results/Forensics.txt
-date +%s | echo $RANDOM | sha512sum | head -c 32 >> ~/Desktop/Ramses/Results/Forensics.txt
-echo >> ~/Desktop/Ramses/Results/Forensics.txt
+#echo $DATE >> ~/Desktop/Ramses/Results/Forensics.txt
 
-cd ~/Desktop/Ramses/Results
-python3 convertVideo.py
+date +%s | echo $RANDOM | sha512sum | head -c 32 >> odir + /Forensics.txt
+echo >> odir + /Forensics.txt
 
-else
+# cd ~/Desktop/Ramses/Results
+# python3 convertVideo.py
 
+elif [ ${file: -4} == ".jpeg" ] || [ ${file: -4} == ".jpg" ] || [ ${file: -4} == ".JPEG" ] || [ ${file: -4} == ".png" ] || [ ${file: -4} == ".PNG" ] 
 
-exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate "${file}" >> ~/Desktop/Ramses/Results/Forensics.txt
+exiftool -s -s -s -FileName -FileSize -ImageSize -FileTypeExtension -FileAccessDate -FileModifyDate "${file}" >> odir + /Forensics.txt
 
-sha3sum -a 512 "${file}" | cut -d " " -f 1 >> ~/Desktop/Ramses/Results/Forensics.txt
-echo $DATE >> ~/Desktop/Ramses/Results/Forensics.txt 
+sha3sum -a 512 "${file}" | cut -d " " -f 1 >> odir + /Forensics.txt
 
-date +%s | echo $RANDOM | sha512sum | head -c 32 >> ~/Desktop/Ramses/Results/Forensics.txt
-echo >> ~/Desktop/Ramses/Results/Forensics.txt
+#echo $DATE >> ~/Desktop/Ramses/Results/Forensics.txt 
 
-cd ~/Desktop/Ramses/Results
-python3 convertImage.py
+date +%s | echo $RANDOM | sha512sum | head -c 32 >> odir + /Forensics.txt
+echo >> odir + /Forensics.txt
+
+# cd ~/Desktop/Ramses/Results
+# python3 convertImage.py
 
 fi
-
-res2=$(date +%s.%N)
-dt=$(echo "$res2 - $res1" | bc)
-dd=$(echo "$dt/86400" | bc)
-dt2=$(echo "$dt-86400*$dd" | bc)
-dh=$(echo "$dt2/3600" | bc)
-dt3=$(echo "$dt2-3600*$dh" | bc)
-dm=$(echo "$dt3/60" | bc)
-ds=$(echo "$dt3-60*$dm" | bc)
-
-printf "Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
 
 done
 

@@ -15,7 +15,7 @@ def ourSecret(idir, odir, s):
     for r, d, f in os.walk(idir):
         # count +=1
         # print(len(f))
-        with open(str(odir) + '/' + str(s) + '_stegResults.csv', mode='w+') as results_file:
+        with open(str(odir) + '/' + str(s) + '_stegResults.csv', mode='a') as results_file:
             csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             # csvwriter.writerow(['Filename', 'Steganography Present', 'Steganography Algorithm', 'Signature'])
             for file in f:
