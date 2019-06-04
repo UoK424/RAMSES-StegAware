@@ -140,13 +140,13 @@ class Ui_MainWindow(QObject):
             
         #check video steg algorithms to be used
         if self.checkBox_6.isChecked() == True:
-            v_algo.append("Generalised EOF")        
+            v_algo.append("EOF")
         if self.checkBox_7.isChecked() == True:
             v_algo.append("Openpuff")
         if self.checkBox_8.isChecked() == True:
-            v_algo.append("BDV DataHider")        
+            v_algo.append("BDV")
         if self.checkBox_9.isChecked() == True:
-            v_algo.append("OmniHide Pro")
+            v_algo.append("OmniHide")
         if self.checkBox_10.isChecked() == True:
             v_algo.append("OurSecret")
 

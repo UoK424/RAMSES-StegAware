@@ -7,7 +7,7 @@ import time
 import csv
 
 
-def BDV(idir, odir, s):
+def omniHide(idir, odir, s):
     start = time.time()
 
     for r, d, f in os.walk(idir):
@@ -17,10 +17,22 @@ def BDV(idir, odir, s):
                 if '.MP4' or '.mp4' in file:
                     with open(str(idir)+'/'+str(file), "rb") as i:
                         stream=i.read()
-                        if b'\xfb\xea\xd8\x81\x25\x0f\xf9' in stream:
-                            csvwriter.writerow([str(file), 'Yes', 'BDV Steganography', 'fbead881250ff9'])
-                        else:
+                        count = 0
+                        steg = False
+
+                        for b in stream:
+                            if b == '\x20':
+                                count += 1
+                                if count >= 140:
+                                    csvwriter.writerow([str(file), 'Yes', 'OmniHide Steganography', 'null byte insertion'])
+                                    steg = True
+                                    break
+                            else:
+                                count = 0
+
+                        if steg == False:
                             csvwriter.writerow([str(file), 'No', 'None', ''])
 
         end = time.time()
         print(end - start)
+
