@@ -9,25 +9,35 @@ import ast
 import subprocess
 import time
 import getpass
+import csv
 import base64
+import random
+from OurSecret.OurSecret import ourSecret
+
 
 def authenticate(usr,pswrd):
 	token = ""
 	return token
+
 		
-def run_tool(idir,odir,prefix,v_algo,i_algo):
-	
-	if len(v_algo)>0:
-		for algo in v_algo:
-			video_steg(idir,odir)
+def run_tool(idir, odir, v_algo, i_algo):
+	seshId = str(random.getrandbits(128))
+
+	with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='w') as results_file:
+		csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+		csvwriter.writerow(['Filename', 'Steganography Present', 'Steganography Algorithm', 'Signature'])
+
+	for algo in v_algo:
+		if algo == 'OurSecret':
+			print('success!')
+			ourSecret(idir, odir, seshId)
 	
 	if len(i_algo)>0:
 		for algo in i_algo:
-			image_steg(idir,odir)
-	
+			image_steg(idir, odir, seshId)
 
 	
-#delete/comment everything below this line before running!
+# delete/comment everything below this line before running!
 def stuff(): 
 	print('RAMSES Steg Tool Version 0.95 beta')
 

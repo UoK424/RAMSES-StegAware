@@ -139,18 +139,20 @@ class Ui_MainWindow(QObject):
             i_algo.append("PixelKnot")
             
         #check video steg algorithms to be used
-        if self.checkBox_3.isChecked() == True:
+        if self.checkBox_6.isChecked() == True:
             v_algo.append("Generalised EOF")        
-        if self.checkBox_4.isChecked() == True:
+        if self.checkBox_7.isChecked() == True:
             v_algo.append("Openpuff")
-        if self.checkBox_3.isChecked() == True:
+        if self.checkBox_8.isChecked() == True:
             v_algo.append("BDV DataHider")        
-        if self.checkBox_4.isChecked() == True:
+        if self.checkBox_9.isChecked() == True:
             v_algo.append("OmniHide Pro")
-        if self.checkBox_3.isChecked() == True:
-            v_algo.append("OurSecret") 
+        if self.checkBox_10.isChecked() == True:
+            v_algo.append("OurSecret")
+
+        print(v_algo)
         
-        middleware_steg.run_tool(inpath,outpath,prefix,v_algo,i_algo)
+        middleware_steg.run_tool(self.inpath,self.outpath,v_algo,i_algo)
         
         #refreshAll( self )
 
