@@ -41,6 +41,28 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 		for r, d, f in os.walk(idir):
 			for file in f:
 				filename = r + '/' + file
+				if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
+					with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
+						csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+						for algo in v_algo:
+							if algo == 'OurSecret':
+								ourSecret(filename, csvwriter)
+							if algo == 'BDV':
+								BDV(filename, csvwriter)
+							if algo == 'OmniHide':
+								omniHide(filename)
+
+						for algo in i_algo:
+							if algo == 'PixelKnot':
+								pKnot(filename, csvwriter)
+
+					metadata(filename, odir, seshId)
+
+	elif rec == True:
+		for filename in Path(idir).glob('**/*.*'):
+			if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
+				print(filename)
 				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -50,7 +72,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 						if algo == 'BDV':
 							BDV(filename, csvwriter)
 						if algo == 'OmniHide':
-							omniHide(filename)
+							omniHide(filename, csvwriter)
 
 					for algo in i_algo:
 						if algo == 'PixelKnot':
@@ -58,38 +80,17 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 				metadata(filename, odir, seshId)
 
-	elif rec == True:
-		for filename in Path(idir).glob('**/*.*'):
-			with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
-				csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-				for algo in v_algo:
-					if algo == 'OurSecret':
-						ourSecret(filename, csvwriter)
-					if algo == 'BDV':
-						BDV(filename, csvwriter)
-					if algo == 'OmniHide':
-						omniHide(filename, csvwriter)
-
-				for algo in i_algo:
-					if algo == 'PixelKnot':
-						pKnot(filename, csvwriter)
-
-			metadata(filename, odir, seshId)
-
 	results_merge(odir, seshId)
 
 	print('Testing complete, please find results in ' + str(odir))
 
 
 def metadata(f, odir, seshId):
-	if '.jpg' or '.JPG' or '.jpeg' or '.JPEG' or '.png' or '.PNG' or '.MP4' or '.mp4' in f:
-		# print(f)
-		with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='a') as meta_file:
-			csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+	with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='a') as meta_file:
+		csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-			m = p.get_json(f)
-			csvwriter.writerow([f, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize']])
+		m = p.get_json(f)
+		csvwriter.writerow([f, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize']])
 
 
 def results_merge(odir, seshId):
