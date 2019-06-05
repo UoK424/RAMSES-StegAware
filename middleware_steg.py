@@ -13,7 +13,7 @@ import subprocess
 import pyexifinfo as p
 import os
 import pandas as pd
-from more_itertools import unique_everseen
+from pathlib import Path
 
 from OurSecret.OurSecret import ourSecret
 from Pixelknot.PixelKnot import pKnot
@@ -26,42 +26,70 @@ def authenticate(usr,pswrd):
 	return token
 
 		
-def run_tool(idir, odir, v_algo, i_algo):
+def run_tool(idir, odir, v_algo, i_algo, rec):
 	seshId = str(random.getrandbits(128))
 
 	with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='w') as results_file:
 		csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 		csvwriter.writerow(['Filename', 'Steganography Present', 'Steganography Algorithm', 'Signature'])
 
-	for algo in v_algo:
-		if algo == 'OurSecret':
-			ourSecret(idir, odir, seshId)
-		if algo == 'BDV':
-			BDV(idir, odir, seshId)
-		if algo == 'OmniHide':
-			omniHide(idir, odir, seshId)
-	
-	for algo in i_algo:
-		if algo == 'pKnot':
-		 	pKnot(idir, odir, seshId)
-
-	metadata(idir, odir, seshId)
-	results_merge(odir, seshId)
-
-
-def metadata(idir, odir, seshId):
-	metalist = []
-	for r, d, f in os.walk(idir):
-		for file in f:
-			print(file)
-			metalist.append(p.get_json(idir + '/' + file))
-
 	with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='w') as meta_file:
 		csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 		csvwriter.writerow(['Filename', 'file type', 'file size', 'file modify date', 'file access date', 'dimensions'])
 
-		for f in metalist:
-			csvwriter.writerow([f[0]['File:FileName'], f[0]['File:FileType'], f[0]['File:FileSize'], f[0]['File:FileModifyDate'], f[0]['File:FileAccessDate'], f[0]['Composite:ImageSize']])
+	if rec == False:
+		for r, d, f in os.walk(idir):
+			for file in f:
+				filename = r + '/' + file
+				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
+					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+					for algo in v_algo:
+						if algo == 'OurSecret':
+							ourSecret(filename, csvwriter)
+						if algo == 'BDV':
+							BDV(filename, csvwriter)
+						if algo == 'OmniHide':
+							omniHide(filename)
+
+					for algo in i_algo:
+						if algo == 'PixelKnot':
+							pKnot(filename, csvwriter)
+
+				metadata(filename, odir, seshId)
+
+	elif rec == True:
+		for filename in Path(idir).glob('**/*.*'):
+			with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
+				csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+				for algo in v_algo:
+					if algo == 'OurSecret':
+						ourSecret(filename, csvwriter)
+					if algo == 'BDV':
+						BDV(filename, csvwriter)
+					if algo == 'OmniHide':
+						omniHide(filename, csvwriter)
+
+				for algo in i_algo:
+					if algo == 'PixelKnot':
+						pKnot(filename, csvwriter)
+
+			metadata(filename, odir, seshId)
+
+	results_merge(odir, seshId)
+
+	print('Testing complete, please find results in ' + str(odir))
+
+
+def metadata(f, odir, seshId):
+	if '.jpg' or '.JPG' or '.jpeg' or '.JPEG' or '.png' or '.PNG' or '.MP4' or '.mp4' in f:
+		# print(f)
+		with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='a') as meta_file:
+			csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+			m = p.get_json(f)
+			csvwriter.writerow([f, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize']])
 
 
 def results_merge(odir, seshId):
@@ -70,5 +98,5 @@ def results_merge(odir, seshId):
 	merged = a.merge(b, on='Filename')
 	merged.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)
 	# doesn't work yet, keep looking at ways to drop duplicates that do not have Steg
-	df = pd.read_csv(str(odir) + '/' + str(seshId) + '_Results.csv').drop_duplicates(keep='first').reset_index()
-	df.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)
+	# df = pd.read_csv(str(odir) + '/' + str(seshId) + '_Results.csv').drop_duplicates(keep='first').reset_index()
+	# df.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)

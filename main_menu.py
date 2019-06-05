@@ -7,6 +7,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot, QObject
 from PyQt5.QtWidgets import QFileDialog
+import os
 import middleware_steg
 
 
@@ -16,19 +17,8 @@ class Ui_MainWindow(QObject):
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        #self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
-        #self.groupBox.setGeometry(QtCore.QRect(10, 20, 120, 80))
-        #self.groupBox.setCheckable(True)
-        #self.groupBox.setObjectName("groupBox")
-        #self.checkBox = QtWidgets.QCheckBox(self.groupBox)
-        #self.checkBox.setGeometry(QtCore.QRect(10, 30, 92, 23))
-        #self.checkBox.setObjectName("checkBox")
-        #self.checkBox_2 = QtWidgets.QCheckBox(self.groupBox)
-        #self.checkBox_2.setGeometry(QtCore.QRect(10, 50, 92, 23))
-        #self.checkBox_2.setObjectName("checkBox_2")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(10, 190, 231, 361))
-        #self.groupBox_2.setCheckable(True)
         self.groupBox_2.setObjectName("groupBox_2")
         self.checkBox_3 = QtWidgets.QCheckBox(self.groupBox_2)
         self.checkBox_3.setGeometry(QtCore.QRect(10, 30, 111, 23))
@@ -38,7 +28,6 @@ class Ui_MainWindow(QObject):
         self.checkBox_4.setObjectName("checkBox_4")
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(250, 190, 241, 361))
-        #self.groupBox_3.setCheckable(True)
         self.groupBox_3.setObjectName("groupBox_3")
         self.checkBox_6 = QtWidgets.QCheckBox(self.groupBox_3)
         self.checkBox_6.setGeometry(QtCore.QRect(10, 30, 131, 23))
@@ -98,11 +87,15 @@ class Ui_MainWindow(QObject):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.inpath = os.getcwd() + "/TestMediaRam"
+        self.outpath = os.getcwd() + "/Results"
+
         self.retranslateUi(MainWindow)
         self.pushButton.clicked.connect(self.inSlot)
         self.pushButton_2.clicked.connect(self.outSlot)     
         self.pushButton_3.clicked.connect(self.runTool)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -125,20 +118,24 @@ class Ui_MainWindow(QObject):
         self.checkBox_5.setText(_translate("MainWindow", "Recursive Search for media"))
         self.pushButton_2.setText(_translate("MainWindow", "Output Directory"))
         self.pushButton_3.setText(_translate("MainWindow", "Run Tool"))
+        self.lineEdit_5.setText(_translate("MainWindow", str(os.getcwd()) + "/TestMediaRam"))
+        self.lineEdit_4.setText(_translate("MainWindow", str(os.getcwd()) + "/Results"))
+
         
     @pyqtSlot( )
     def runTool( self ):
         i_algo = []
         v_algo = []
+        recurse = False
         prefix = self.lineEdit_3.text()
         
-        #check image steg algorithms to be used
+        # check image steg algorithms to be used
         if self.checkBox_3.isChecked() == True:
             i_algo.append("StegExpose")        
         if self.checkBox_4.isChecked() == True:
             i_algo.append("PixelKnot")
             
-        #check video steg algorithms to be used
+        # check video steg algorithms to be used
         if self.checkBox_6.isChecked() == True:
             v_algo.append("EOF")
         if self.checkBox_7.isChecked() == True:
@@ -150,9 +147,11 @@ class Ui_MainWindow(QObject):
         if self.checkBox_10.isChecked() == True:
             v_algo.append("OurSecret")
 
-        print(v_algo)
-        
-        middleware_steg.run_tool(self.inpath,self.outpath,v_algo,i_algo)
+        # check whether recursive search is enabled
+        if self.checkBox_5.isChecked() == True:
+            recurse = True
+
+        middleware_steg.run_tool(self.inpath, self.outpath, v_algo, i_algo, recurse)
         
         #refreshAll( self )
 
