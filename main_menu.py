@@ -13,7 +13,7 @@ import middleware_steg
 
 class Ui_MainWindow(QObject):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("RAMSES StegAware v0.9a")
+        MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -99,7 +99,7 @@ class Ui_MainWindow(QObject):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "RAMSES StegAware v0.9a"))
         #self.groupBox.setTitle(_translate("MainWindow", "Media"))
         #self.checkBox.setText(_translate("MainWindow", "Video"))
         #self.checkBox_2.setText(_translate("MainWindow", "Image"))
