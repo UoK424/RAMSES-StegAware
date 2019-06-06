@@ -13,7 +13,7 @@ import middleware_steg
 
 class Ui_MainWindow(QObject):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
+        MainWindow.setObjectName("RAMSES StegAware v0.9a")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
