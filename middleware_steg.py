@@ -46,39 +46,53 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 						csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
 						for algo in v_algo:
+							if str(filename).lower().endswith('.mp4'):
+								if algo == 'OurSecret':
+									ourSecret(filename, csvwriter)
+								if algo == 'BDV':
+									BDV(filename, csvwriter)
+								if algo == 'OmniHide':
+									omniHide(filename)
+								if algo == 'Openpuff':
+									subprocess.call('bash ./OpenPuff/OPStart.sh ' + filename)
+
+								metadata(filename, odir, seshId)
+
+						for algo in i_algo:
+							if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
+								if algo == 'PixelKnot':
+									pKnot(filename, csvwriter)
+
+								metadata(filename, odir, seshId)
+
+	elif rec == True:
+		for filename in Path(idir).glob('**/*.*'):
+			if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
+				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
+					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+					for algo in v_algo:
+						if str(filename).lower().endswith('.mp4'):
 							if algo == 'OurSecret':
 								ourSecret(filename, csvwriter)
 							if algo == 'BDV':
 								BDV(filename, csvwriter)
 							if algo == 'OmniHide':
-								omniHide(filename)
+								omniHide(filename, csvwriter)
+							if algo == 'Openpuff':
+								# subprocess.call('echo {} | bash ./OpenPuff/OPStart.sh --args'.format(filename), shell=True)
+								var = subprocess.Popen(['/bin/echo', filename], stdout=subprocess.PIPE)
+								second = subprocess.Popen(['bash', './OpenPuff/OPStart.sh', '--args'], stdin=var.stdout, stdout=subprocess.PIPE)
+								var.stdout.close()
+								output = second.communicate()[0]
+								var.wait()
 
-						for algo in i_algo:
-							if algo == 'PixelKnot':
-								pKnot(filename, csvwriter)
-
-					metadata(filename, odir, seshId)
-
-	elif rec == True:
-		for filename in Path(idir).glob('**/*.*'):
-			if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
-				print(filename)
-				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
-					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-					for algo in v_algo:
-						if algo == 'OurSecret':
-							ourSecret(filename, csvwriter)
-						if algo == 'BDV':
-							BDV(filename, csvwriter)
-						if algo == 'OmniHide':
-							omniHide(filename, csvwriter)
+							metadata(filename, odir, seshId)
 
 					for algo in i_algo:
-						if algo == 'PixelKnot':
-							pKnot(filename, csvwriter)
-
-				metadata(filename, odir, seshId)
+						if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
+							if algo == 'PixelKnot':
+								pKnot(filename, csvwriter)
+							metadata(filename, odir, seshId)
 
 	results_merge(odir, seshId)
 

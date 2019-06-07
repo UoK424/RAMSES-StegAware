@@ -7,22 +7,18 @@ def omniHide(f, csvwriter):
     with open(f, "rb") as i:
         stream = i.read()
         steg = False
+        bstring = ''
 
-        for b in stream:
-            if b == '\x20':
-                count += 1
-                if count >= 140:
-                    csvwriter.writerow([f, 'Yes', 'OmniHide Steganography', 'null byte insertion'])
-                    steg = True
-                    break
-                else:
-                    count = 0
+        for i in range(0, 140):
+            bstring = bstring + '\x20'
 
-        if steg == False:
+        print(bstring)
+        
+        if bstring.encode('utf-8') in stream:
+            csvwriter.writerow([f, 'Yes', 'OmniHide Steganography', 'null byte insertion'])
+        else:
             csvwriter.writerow([f, 'No', 'None', ''])
 
     end = time.time()
     print(end - start)
-
-    return steg
 

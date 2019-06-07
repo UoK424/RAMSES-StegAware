@@ -24,9 +24,10 @@ for line in $(< /tmp/tmp3); do
 	echo -n "" >/tmp/tmp3
 fi
 done
-	echo $pvar
-	echo $nvar
-	if [[ $pvar -gt $nvar ]]; then
+
+echo $pvar
+echo $nvar
+if [[ $pvar -gt $nvar ]]; then
 
 	echo -e "OpenPuff Steganography">> ~/Desktop/Ramses/Results/OpenPuff.txt
 	echo -e "yes" >> ~/Desktop/Ramses/Results/OpenPuff.txt
