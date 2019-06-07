@@ -1,6 +1,10 @@
 #!/bin/bash
 
-mp4file --dump ${1} > /tmp/mp4dumpfile
+rm "Results/OpenPuff.txt"
+
+echo "${1}"
+
+mp4file --dump "${1}" > /tmp/mp4dumpfile
 
 grep flag /tmp/mp4dumpfile >/tmp/tmp1
 

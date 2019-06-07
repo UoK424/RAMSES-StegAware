@@ -20,7 +20,6 @@ from Pixelknot.PixelKnot import pKnot
 from BDV.BDVScanner import BDV
 from OmniHide.OmniHide import omniHide
 
-
 def authenticate(usr,pswrd):
 	token = ""
 	return token
@@ -54,7 +53,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 								if algo == 'OmniHide':
 									omniHide(filename)
 								if algo == 'Openpuff':
-									subprocess.call('bash ./OpenPuff/OPStart.sh ' + filename)
+									subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
 
 								metadata(filename, odir, seshId)
 
@@ -79,12 +78,12 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 							if algo == 'OmniHide':
 								omniHide(filename, csvwriter)
 							if algo == 'Openpuff':
-								# subprocess.call('echo {} | bash ./OpenPuff/OPStart.sh --args'.format(filename), shell=True)
-								var = subprocess.Popen(['/bin/echo', filename], stdout=subprocess.PIPE)
-								second = subprocess.Popen(['bash', './OpenPuff/OPStart.sh', '--args'], stdin=var.stdout, stdout=subprocess.PIPE)
-								var.stdout.close()
-								output = second.communicate()[0]
-								var.wait()
+								subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
+
+								with open('Results/OpenPuff.txt', 'r') as oRes:
+									lines = oRes.readlines()
+									print(lines)
+									csvwriter.writerow([filename, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
 
 							metadata(filename, odir, seshId)
 
@@ -92,6 +91,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 						if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 							if algo == 'PixelKnot':
 								pKnot(filename, csvwriter)
+
 							metadata(filename, odir, seshId)
 
 	results_merge(odir, seshId)

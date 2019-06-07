@@ -27,13 +27,14 @@ done
 
 echo $pvar
 echo $nvar
+
 if [[ $pvar -gt $nvar ]]; then
 
-	echo -e "OpenPuff Steganography">> ~/Desktop/Ramses/Results/OpenPuff.txt
+	echo -e "OpenPuff Steganography"> ~/Desktop/Ramses/Results/OpenPuff.txt
 	echo -e "yes" >> ~/Desktop/Ramses/Results/OpenPuff.txt
 	echo -e "Flag Modification" >> ~/Desktop/Ramses/Results/OpenPuff.txt
 	else
-	echo -e "None">> ~/Desktop/Ramses/Results/OpenPuff.txt
+	echo -e "None"> ~/Desktop/Ramses/Results/OpenPuff.txt
 	echo -e "None">> ~/Desktop/Ramses/Results/OpenPuff.txt
 	echo -e "None">> ~/Desktop/Ramses/Results/OpenPuff.txt
 	pvar=0
