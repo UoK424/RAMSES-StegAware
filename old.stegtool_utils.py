@@ -1,6 +1,5 @@
 import csv 
 import json
-import hashlib
 
 
 def dict_to_binary(the_dict):
@@ -25,22 +24,18 @@ def local_res_parser(filename,p,i):
 				print('End of records.')
 				break
 			else:
-				if (row[1] == 'mp4'):
+				if (row[3] == 'mp4'):
 					d = {}
-					d['date'] = row[3][:11]+row[3][12:20]
-					d['id'] = row[0].split('/')[-1] #row[8]
-					hasher = hashlib.sha1()
-					with open(row[0], 'rb') as ifile:
-						buf = ifile.read()
-						hasher.update(buf)
-						d['image_hash'] = hasher.hexdigest()
-					d['image_type'] = row[1]
+					d['date'] = row[4][:11]+row[4][12:20]
+					d['id'] = row[7] #row[8]
+					d['image_hash'] = row[7]
+					d['image_type'] = row[3]
 					d['privacy'] = p #make this an option!
 					
-					if (row[7] != 'None'):
-						d['steg_algorithm'] = row[7]
-						d['steg_present'] = row[6]
-						d['steg_signature'] = row[8]
+					if (row[10] != 'None'):
+						d['steg_algorithm'] = row[10]
+						d['steg_present'] = row[11]
+						d['steg_signature'] = row[12]
 						d['malware_campaign'] = i
 					else:
 						d['steg_algorithm'] = 'None'
@@ -48,23 +43,19 @@ def local_res_parser(filename,p,i):
 						d['steg_signature'] = 'None'
 						d['malware_campaign'] = 'None'
 						
-					d['duration'] = 'temp_var' # row[9]
+					d['duration'] = row[6]
 				else:
 					d = {}
-					d['date'] = row[3][:11]+row[3][12:20]
-					d['id'] = row[0].split('/')[-1] #row[]
-					hasher = hashlib.sha1()
-					with open(row[0], 'rb') as ifile:
-						buf = ifile.read()
-						hasher.update(buf)
-						d['image_hash'] = hasher.hexdigest()
-					d['image_type'] = row[1]
+					d['date'] = row[4][:11]+row[4][12:20]
+					d['id'] = row[6] #row[8]
+					d['image_hash'] = row[6]
+					d['image_type'] = row[3]
 					d['privacy'] = p #make this an option!
 					
-					if (row[7] != 'None'):
-						d['steg_algorithm'] = row[7]
-						d['steg_present'] = row[6]
-						d['steg_signature'] = row[8]
+					if (row[9] != 'None'):
+						d['steg_algorithm'] = row[9]
+						d['steg_present'] = row[10]
+						d['steg_signature'] = row[11]
 						d['malware_campaign'] = i
 					else:
 						d['steg_algorithm'] = 'None'
@@ -77,8 +68,7 @@ def local_res_parser(filename,p,i):
 				l_d.append(d)
 		
 		return l_d
-
-
+	
 def plat_to_csv(dicts):
 	c = 0
 	fields=set().union(*(d.keys() for d in dicts))

@@ -3,16 +3,13 @@
 
 import stegtool_swagger_wrapper as swag
 import stegtool_utils as utils
-import json
-import time
-import getpass
 import csv
-import base64
 import random
 import subprocess
 import pyexifinfo as p
 import os
 import pandas as pd
+
 from pathlib import Path
 
 from OurSecret.OurSecret import ourSecret
@@ -20,9 +17,24 @@ from Pixelknot.PixelKnot import pKnot
 from BDV.BDVScanner import BDV
 from OmniHide.OmniHide import omniHide
 
-def authenticate(usr,pswrd):
-	token = ""
-	return token
+
+def pushResults(token, results, p, i):
+	r = []
+
+	oRes = utils.local_res_parser(results, p, i)
+	print(oRes)
+	for entry in oRes:
+		print(entry)
+		x = (swag.post_result(token, entry))
+		print(x)
+		r.append(x)
+
+	return r
+
+
+def authenticate(usrnm, password):
+	r = swag.authenticate(usrnm, password)
+	return r
 
 		
 def run_tool(idir, odir, v_algo, i_algo, rec):
@@ -94,9 +106,11 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 							metadata(filename, odir, seshId)
 
-	results_merge(odir, seshId)
+	n = results_merge(odir, seshId)
 
 	print('Testing complete, please find results in ' + str(odir))
+
+	return n
 
 
 def metadata(f, odir, seshId):
@@ -108,10 +122,13 @@ def metadata(f, odir, seshId):
 
 
 def results_merge(odir, seshId):
+	mergeRes = str(odir) + '/' + str(seshId) + '_Results.csv'
 	a = pd.read_csv(str(odir) + '/' + str(seshId) + '_metaData.csv')
 	b = pd.read_csv(str(odir) + '/' + str(seshId) + '_stegResults.csv')
 	merged = a.merge(b, on='Filename')
-	merged.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)
+	merged.to_csv(mergeRes, index=False)
+
+	return mergeRes
 	# doesn't work yet, keep looking at ways to drop duplicates that do not have Steg
 	# df = pd.read_csv(str(odir) + '/' + str(seshId) + '_Results.csv').drop_duplicates(keep='first').reset_index()
 	# df.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)

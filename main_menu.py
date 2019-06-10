@@ -6,9 +6,41 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSlot, QObject
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QDialog
 import os
+import json
+import base64
 import middleware_steg
+
+token = ""
+usrnm = ""
+
+class Login(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(Login, self).__init__(parent)
+        self.textName = QtWidgets.QLineEdit(self)
+        self.textPass = QtWidgets.QLineEdit(self)
+        self.buttonLogin = QtWidgets.QPushButton('Login', self)
+        self.buttonLogin.clicked.connect(self.handleLogin)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.addWidget(self.textName)
+        layout.addWidget(self.textPass)
+        layout.addWidget(self.buttonLogin)
+
+    def handleLogin(self):
+        global token
+        global usrnm
+        usrnm = self.textName.text()
+        temp = middleware_steg.authenticate(self.textName.text(), self.textPass.text())
+        access_cred = temp.content
+        if (temp.status_code == 200):
+            access_cred = json.loads(access_cred.decode())
+            token = access_cred["access_token"]
+            token_split = token.split('.')[1];
+            x = json.loads(base64.b64decode(token_split + "=" * ((4 - len(token_split) % 4) % 4)))
+            self.accept()
+        else:
+            print("Incorrect credentials, please try again.\n")
 
 
 class Ui_MainWindow(QObject):
@@ -70,14 +102,13 @@ class Ui_MainWindow(QObject):
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(560, 300, 161, 51))
+        self.checkBox_11 = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBox_11.setGeometry(QtCore.QRect(560, 250, 161, 51))
+        self.checkBox_11.setObjectName("checkBox_11")
         font = QtGui.QFont()
         font.setPointSize(20)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
-        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setGeometry(QtCore.QRect(520, 370, 241, 41))
-        self.progressBar.setProperty("value", 24)
-        self.progressBar.setObjectName("progressBar")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
@@ -100,9 +131,6 @@ class Ui_MainWindow(QObject):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "RAMSES StegAware v0.9a"))
-        #self.groupBox.setTitle(_translate("MainWindow", "Media"))
-        #self.checkBox.setText(_translate("MainWindow", "Video"))
-        #self.checkBox_2.setText(_translate("MainWindow", "Image"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Image Algorithms"))
         self.checkBox_3.setText(_translate("MainWindow", "StegExpose"))
         self.checkBox_4.setText(_translate("MainWindow", "PixelKnot "))
@@ -112,6 +140,7 @@ class Ui_MainWindow(QObject):
         self.checkBox_8.setText(_translate("MainWindow", "BDV DataHider"))
         self.checkBox_9.setText(_translate("MainWindow", "OmniHide Pro"))
         self.checkBox_10.setText(_translate("MainWindow", "OurSecret"))
+        self.checkBox_11.setText(_translate("MainWindow", "Push results to RAMSES"))
         self.groupBox_4.setTitle(_translate("MainWindow", "I/O Directories"))
         self.label_2.setText(_translate("MainWindow", "Custom Prefix"))
         self.pushButton.setText(_translate("MainWindow", "Input Directory"))
@@ -123,11 +152,15 @@ class Ui_MainWindow(QObject):
 
         
     @pyqtSlot( )
-    def runTool( self ):
+    def runTool(self):
         i_algo = []
         v_algo = []
         recurse = False
         prefix = self.lineEdit_3.text()
+
+        if self.checkBox_11.isChecked() == True:
+            login_page = Login()
+            login_page.exec_()
         
         # check image steg algorithms to be used
         if self.checkBox_3.isChecked() == True:
@@ -151,7 +184,11 @@ class Ui_MainWindow(QObject):
         if self.checkBox_5.isChecked() == True:
             recurse = True
 
-        middleware_steg.run_tool(self.inpath, self.outpath, v_algo, i_algo, recurse)
+        resPath = middleware_steg.run_tool(self.inpath, self.outpath, v_algo, i_algo, recurse)
+
+        if self.checkBox_11.isChecked() == True:
+            global token
+            middleware_steg.pushResults(token, resPath, 'public', 'testMalware')
         
         #refreshAll( self )
 
