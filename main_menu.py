@@ -14,6 +14,7 @@ import middleware_steg
 
 token = ""
 usrnm = ""
+files = []
 
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -40,7 +41,36 @@ class Login(QtWidgets.QDialog):
             x = json.loads(base64.b64decode(token_split + "=" * ((4 - len(token_split) % 4) % 4)))
             self.accept()
         else:
-            print("Incorrect credentials, please try again.\n")
+            QtWidgets.QMessageBox.warning(self, 'Error', 'Bad user or password')
+
+class App(QtWidgets.QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.title = 'Select CSV Files for Upload'
+        self.left = 10
+        self.top = 10
+        self.width = 640
+        self.height = 480
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+        # self.openFileNameDialog()
+        self.openFileNamesDialog()
+        # self.saveFileDialog()
+
+        self.show()
+
+    def openFileNamesDialog(self):
+        global files
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "", "All Files (*);;CSV Files (*csv)", options=options)
+        if files:
+            return files
 
 
 class Ui_MainWindow(QObject):
@@ -117,6 +147,8 @@ class Ui_MainWindow(QObject):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(560, 375, 161, 51))
 
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
@@ -125,6 +157,7 @@ class Ui_MainWindow(QObject):
         self.pushButton.clicked.connect(self.inSlot)
         self.pushButton_2.clicked.connect(self.outSlot)     
         self.pushButton_3.clicked.connect(self.runTool)
+        self.pushButton_4.clicked.connect(self.uploadFiles)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -147,6 +180,7 @@ class Ui_MainWindow(QObject):
         self.checkBox_5.setText(_translate("MainWindow", "Recursive Search for media"))
         self.pushButton_2.setText(_translate("MainWindow", "Output Directory"))
         self.pushButton_3.setText(_translate("MainWindow", "Run Tool"))
+        self.pushButton_4.setText(_translate("MainWindow", "Upload Existing File"))
         self.lineEdit_5.setText(_translate("MainWindow", str(os.getcwd()) + "/TestMediaRam"))
         self.lineEdit_4.setText(_translate("MainWindow", str(os.getcwd()) + "/Results"))
 
@@ -211,8 +245,21 @@ class Ui_MainWindow(QObject):
         self.lineEdit_5.setText(path)
         
         #refreshAll( self )
-    
-    def refreshAll( self ):
+
+    def uploadFiles(self):
+        global token
+        global files
+        if token == '':
+            login_page = Login()
+            login_page.exec_()
+
+        if token != '':
+            App()
+            for file in files:
+                middleware_steg.pushResults(token, file, 'public', 'testMalware_previous')
+
+
+def refreshAll( self ):
         '''
         Updates the widgets whenever an interaction happens.
         Typically some interaction takes place, the UI responds,

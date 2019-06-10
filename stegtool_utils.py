@@ -1,6 +1,5 @@
 import csv 
 import json
-import hashlib
 
 
 def dict_to_binary(the_dict):
@@ -29,18 +28,14 @@ def local_res_parser(filename,p,i):
 					d = {}
 					d['date'] = row[3][:11]+row[3][12:20]
 					d['id'] = row[0].split('/')[-1] #row[8]
-					hasher = hashlib.sha1()
-					with open(row[0], 'rb') as ifile:
-						buf = ifile.read()
-						hasher.update(buf)
-						d['image_hash'] = hasher.hexdigest()
+					d['image_hash'] = row[6]
 					d['image_type'] = row[1]
 					d['privacy'] = p #make this an option!
 					
 					if (row[7] != 'None'):
-						d['steg_algorithm'] = row[7]
-						d['steg_present'] = row[6]
-						d['steg_signature'] = row[8]
+						d['steg_algorithm'] = row[8]
+						d['steg_present'] = row[7]
+						d['steg_signature'] = row[9]
 						d['malware_campaign'] = i
 					else:
 						d['steg_algorithm'] = 'None'
@@ -53,18 +48,14 @@ def local_res_parser(filename,p,i):
 					d = {}
 					d['date'] = row[3][:11]+row[3][12:20]
 					d['id'] = row[0].split('/')[-1] #row[]
-					hasher = hashlib.sha1()
-					with open(row[0], 'rb') as ifile:
-						buf = ifile.read()
-						hasher.update(buf)
-						d['image_hash'] = hasher.hexdigest()
+					d['image_hash'] = row[6]
 					d['image_type'] = row[1]
 					d['privacy'] = p #make this an option!
 					
 					if (row[7] != 'None'):
-						d['steg_algorithm'] = row[7]
-						d['steg_present'] = row[6]
-						d['steg_signature'] = row[8]
+						d['steg_algorithm'] = row[8]
+						d['steg_present'] = row[7]
+						d['steg_signature'] = row[9]
 						d['malware_campaign'] = i
 					else:
 						d['steg_algorithm'] = 'None'

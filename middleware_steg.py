@@ -9,6 +9,7 @@ import subprocess
 import pyexifinfo as p
 import os
 import pandas as pd
+import hashlib
 
 from pathlib import Path
 
@@ -22,9 +23,7 @@ def pushResults(token, results, p, i):
 	r = []
 
 	oRes = utils.local_res_parser(results, p, i)
-	print(oRes)
 	for entry in oRes:
-		print(entry)
 		x = (swag.post_result(token, entry))
 		print(x)
 		r.append(x)
@@ -46,7 +45,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 	with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='w') as meta_file:
 		csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-		csvwriter.writerow(['Filename', 'file type', 'file size', 'file modify date', 'file access date', 'dimensions'])
+		csvwriter.writerow(['Filename', 'file type', 'file size', 'file modify date', 'file access date', 'dimensions', 'sha1 Hash'])
 
 	if rec == False:
 		for r, d, f in os.walk(idir):
@@ -114,11 +113,16 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 
 def metadata(f, odir, seshId):
+	hasher = hashlib.sha1()
+	with open(f, 'rb') as ifile:
+		buf = ifile.read()
+		hasher.update(buf)
+
 	with open(str(odir) + '/' + str(seshId) + '_metaData.csv', mode='a') as meta_file:
 		csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
 		m = p.get_json(f)
-		csvwriter.writerow([f, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize']])
+		csvwriter.writerow([f, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize'], hasher.hexdigest()])
 
 
 def results_merge(odir, seshId):
