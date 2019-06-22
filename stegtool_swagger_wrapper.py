@@ -2,7 +2,7 @@ import requests
 import json
 
 
-def authenticate (usrnm, password):
+def authenticate(usrnm, password):
 	url = 'https://ramses.treelogic.com/auth/realms/ramses/protocol/openid-connect/token'
 	headers = {
 	'Content-Type': 'application/x-www-form-urlencoded',
@@ -20,51 +20,51 @@ def authenticate (usrnm, password):
 	return r
 
 
-def get_list (token,params):
+def get_list(token, params):
         headers = {
         'Accept': 'application/json',
         'Authorization': 'Bearer {0}'.format(token),
         }
 
-        r = requests.get('https://ramses.treelogic.com/ramses-1.0.0/api/ramses/mf/steganography', headers=headers, params=params)
+        r = requests.get('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography', headers=headers, params=params)
         return r
 
 
-def post_result (token, result):
+def post_result(token, result):
         headers = {
         'Content-Type': 'application/json',
 		'Authorization': 'Bearer {0}'.format(token),
         'Accept': 'application/json'
         }
 
-        r = requests.post('https://ramses.treelogic.com/ramses-1.0.0/api/ramses/mf/steganography', headers=headers, data=json.dumps(result))
+        r = requests.post('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography', headers=headers, data=json.dumps(result))
         
         return r
 
 
-def delete_result (token,id):
+def delete_result(token, id):
         headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {0}'.format(token),
         'Accept': 'application/json',
         }
 
-        r = requests.delete('https://ramses.treelogic.com/ramses-1.0.0/api/ramses/mf/steganography/'+str(id), headers=headers)
+        r = requests.delete('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(id), headers=headers)
         return r
 
 
-def get_result (token,id):
+def get_result(token, id):
         headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {0}'.format(token),
         'Accept': 'application/json',
         }
 
-        r = requests.get('https://ramses.treelogic.com/ramses-1.0.0/api/ramses/mf/steganography/'+str(id), headers=headers)
+        r = requests.get('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(id), headers=headers)
         return r
 
 
-def update_result (token, result, id):
+def update_result(token, result, id):
         headers = {
         'Content-Type': 'application/json',
 		'Authorization': 'Bearer {0}'.format(token),
@@ -72,17 +72,17 @@ def update_result (token, result, id):
         }
 		
 
-        r = requests.post('https://ramses.treelogic.com/ramses-1.0.0/api/ramses/mf/steganography/'+str(id), headers=headers, data=json.dumps(result))
+        r = requests.post('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(id), headers=headers, data=json.dumps(result))
         #print(r.text)
         return r
 
 
-def scan_list (token,usrid):
+def scan_list(token, usrid):
         exists = []
         f = 0
         while True:
-            params = (('size',1000),('from',f),('userId',usrid))
-            e = get_list(token,params).content
+            params = (('size', 1000), ('from', f), ('userId', usrid))
+            e = get_list(token, params).content
             e = json.loads(e.decode())
             if e == []:
                 break

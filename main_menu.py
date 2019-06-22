@@ -5,8 +5,8 @@
 # Created by: PyQt5 UI code generator 5.12.2
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot, QObject
-from PyQt5.QtWidgets import QFileDialog, QDialog
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QFileDialog, QMainWindow, QRadioButton
 import os
 import json
 import base64
@@ -15,6 +15,9 @@ import middleware_steg
 token = ""
 usrnm = ""
 files = []
+usrid = ""
+p = ""
+
 
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -29,6 +32,34 @@ class Login(QtWidgets.QDialog):
         layout.addWidget(self.textPass)
         layout.addWidget(self.buttonLogin)
 
+        self.b1 = QRadioButton("Public")
+        self.b1.setChecked(True)
+        self.b1.toggled.connect(lambda: self.btnstate(self.b1))
+        layout.addWidget(self.b1)
+
+        self.b2 = QRadioButton("Agency")
+        self.b2.toggled.connect(lambda: self.btnstate(self.b2))
+        layout.addWidget(self.b2)
+
+        self.b3 = QRadioButton("Private")
+        self.b3.toggled.connect(lambda: self.btnstate(self.b3))
+        layout.addWidget(self.b3)
+
+    def btnstate(self, b):
+        global p
+
+        if b.text() == "Public":
+            if b.isChecked() == True:
+                p = 'public'
+
+        if b.text() == "Agency":
+            if b.isChecked() == True:
+                p = 'agency'
+
+        if b.text() == "Private":
+            if b.isChecked() == True:
+                p = 'private'
+
     def handleLogin(self):
         global token
         global usrnm
@@ -40,6 +71,8 @@ class Login(QtWidgets.QDialog):
             token = access_cred["access_token"]
             token_split = token.split('.')[1];
             x = json.loads(base64.b64decode(token_split + "=" * ((4 - len(token_split) % 4) % 4)))
+            global usrid
+            usrid = x['sub']
             self.accept()
         else:
             QtWidgets.QMessageBox.warning(self, 'Error', 'Bad user or password')
@@ -74,7 +107,7 @@ class App(QtWidgets.QWidget):
             return files
 
 
-class Ui_MainWindow(QObject):
+class Ui_MainWindow(QMainWindow):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -153,6 +186,7 @@ class Ui_MainWindow(QObject):
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
+
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
 
@@ -161,14 +195,14 @@ class Ui_MainWindow(QObject):
         self.pushButton_2.clicked.connect(self.outSlot)     
         self.pushButton_3.clicked.connect(self.runTool)
         self.pushButton_4.clicked.connect(self.uploadFiles)
-        self.pushButton_4.clicked.connect(self.deleteFiles)
+        self.pushButton_5.clicked.connect(self.deleteFiles)
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "RAMSES StegAware v0.9a"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "RAMSES StegAware"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Image Algorithms"))
         self.checkBox_3.setText(_translate("MainWindow", "StegExpose"))
         self.checkBox_4.setText(_translate("MainWindow", "PixelKnot "))
@@ -199,6 +233,7 @@ class Ui_MainWindow(QObject):
         prefix = self.lineEdit_3.text()
         global token
         global files
+        global p
 
         if self.checkBox_11.isChecked() == True:
             login_page = Login()
@@ -230,7 +265,7 @@ class Ui_MainWindow(QObject):
 
         if self.checkBox_11.isChecked() == True:
             global token
-            middleware_steg.pushResults(token, resPath, 'public', 'testMalware')
+            middleware_steg.pushResults(token, resPath, p, 'testMalware')
         
         #refreshAll( self )
 
@@ -266,7 +301,14 @@ class Ui_MainWindow(QObject):
 
 
     def deleteFiles(self):
-        return 0
+        itemlist = ['all']
+        while True:
+            if token != "":
+                middleware_steg.deleteRecords(token, usrid, itemlist)
+                break
+            else:
+                login_page = Login()
+                login_page.exec_()
 
 
 def refreshAll( self ):
@@ -288,4 +330,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+
     sys.exit(app.exec_())

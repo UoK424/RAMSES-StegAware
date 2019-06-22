@@ -23,10 +23,14 @@ def pushResults(token, results, p, i):
 	r = []
 
 	oRes = utils.local_res_parser(results, p, i)
+	c = 0
 	for entry in oRes:
 		x = (swag.post_result(token, entry))
+		if x == '<Response [200]>':
+			c += 1
 		print(x)
 		r.append(x)
+	print(str(c) + ' entries pushed to the RAMSES platform')
 
 	return r
 
@@ -71,39 +75,40 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 						for algo in i_algo:
 							if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 								if algo == 'PixelKnot':
-									pKnot(filename, csvwriter)
+									pKnot(filename, file, csvwriter)
 
-								metadata(filename, odir, seshId)
+								metadata(filename, file, odir, seshId)
 
 	elif rec == True:
 		for filename in Path(idir).glob('**/*.*'):
+			head, file = os.path.split(filename)
 			if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
 				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 					for algo in v_algo:
 						if str(filename).lower().endswith('.mp4'):
 							if algo == 'OurSecret':
-								ourSecret(filename, csvwriter)
+								ourSecret(filename, file, csvwriter)
 							if algo == 'BDV':
-								BDV(filename, csvwriter)
+								BDV(filename, file, csvwriter)
 							if algo == 'OmniHide':
-								omniHide(filename, csvwriter)
+								omniHide(filename, file, csvwriter)
 							if algo == 'Openpuff':
 								subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
 
 								with open('Results/OpenPuff.txt', 'r') as oRes:
 									lines = oRes.readlines()
 									print(lines)
-									csvwriter.writerow([filename, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
+									csvwriter.writerow([file, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
 
 							metadata(filename, odir, seshId)
 
 					for algo in i_algo:
 						if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 							if algo == 'PixelKnot':
-								pKnot(filename, csvwriter)
+								pKnot(filename, file, csvwriter)
 
-							metadata(filename, odir, seshId)
+							metadata(filename, file, odir, seshId)
 
 	n = results_merge(odir, seshId)
 
@@ -112,7 +117,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 	return n
 
 
-def metadata(f, odir, seshId):
+def metadata(f, file, odir, seshId):
 	hasher = hashlib.sha1()
 	with open(f, 'rb') as ifile:
 		buf = ifile.read()
@@ -122,7 +127,26 @@ def metadata(f, odir, seshId):
 		csvwriter = csv.writer(meta_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
 		m = p.get_json(f)
-		csvwriter.writerow([f, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize'], hasher.hexdigest()])
+		csvwriter.writerow([file, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize'], hasher.hexdigest()])
+
+def deleteRecords(token, usrid, itemlist):
+	c = 0
+	r = swag.scan_list(token, usrid)
+	if itemlist == ['all']:
+		print('Deleting everything!')
+		for i in r:
+			resp = swag.delete_result(token, str(i.get('id', i)))
+			if resp == '<Response [200]>':
+				c += 1
+			print(str(resp) + ' : ' + str(i.get('id', i)))
+		print(str(c) + ' entries deleted from the RAMSES platform')
+	else:
+		for i in itemlist:
+			resp = swag.delete_result(token, str(i.get('id', i)))
+			if resp == '<Response [200]>':
+				c += 1
+			print(str(resp) + ' : ' + str(i.get('id', i)))
+		print(str(c) + ' entries deleted from the RAMSES platform')
 
 
 def results_merge(odir, seshId):
