@@ -19,6 +19,12 @@ usrid = ""
 p = ""
 
 
+class EmittingStream(QtCore.QObject):
+    textWritten = QtCore.pyqtSignal(str)
+
+    def write(self, text):
+        self.textWritten.emit(str(text))
+
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
@@ -189,6 +195,8 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
+        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
+
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
 
@@ -201,6 +209,15 @@ class Ui_MainWindow(QMainWindow):
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def __del__(selfself):
+        sys.stdout = sys.__stdout__
+
+    def normalOutputWritten(self, text):
+        cursor = self.textEdit.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        cursor.insertText(text)
+        self.textEdit.setTextCurosr(cursor)
+        self.textEdit.ensureCursorVisible()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
