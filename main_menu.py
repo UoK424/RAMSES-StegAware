@@ -195,8 +195,6 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
-        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
-
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
 
@@ -214,9 +212,9 @@ class Ui_MainWindow(QMainWindow):
 
     def normalOutputWritten(self, text):
         cursor = self.textEdit.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
+        cursor.movePosition(QtWidgets.QTextCursor.End)
         cursor.insertText(text)
-        self.textEdit.setTextCurosr(cursor)
+        self.textEdit.setTextCursor(cursor)
         self.textEdit.ensureCursorVisible()
 
     def retranslateUi(self, MainWindow):
