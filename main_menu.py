@@ -19,8 +19,9 @@ files = []
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
-        self.textName = QtWidgets.QLineEdit(self)
-        self.textPass = QtWidgets.QLineEdit(self)
+        self.textName = QtWidgets.QLineEdit(self, placeholderText="Username")
+        self.textPass = QtWidgets.QLineEdit(self, placeholderText="Password")
+        self.textPass.setEchoMode(QtWidgets.QLineEdit.Password)
         self.buttonLogin = QtWidgets.QPushButton('Login', self)
         self.buttonLogin.clicked.connect(self.handleLogin)
         layout = QtWidgets.QVBoxLayout(self)
@@ -196,6 +197,8 @@ class Ui_MainWindow(QObject):
         v_algo = []
         recurse = False
         prefix = self.lineEdit_3.text()
+        global token
+        global files
 
         if self.checkBox_11.isChecked() == True:
             login_page = Login()
@@ -252,8 +255,6 @@ class Ui_MainWindow(QObject):
         #refreshAll( self )
 
     def uploadFiles(self):
-        global token
-        global files
         if token == '':
             login_page = Login()
             login_page.exec_()
