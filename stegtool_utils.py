@@ -26,8 +26,8 @@ def local_res_parser(filename,p,i):
 			else:
 				if (row[1] == 'mp4'):
 					d = {}
-					d['date'] = row[3][:11]+row[3][12:20]
-					d['id'] = row[0].split('/')[-1] #row[8]
+					d['date'] = row[3][:11]+row[3][11:] #row[3][:10]+"'T'"+row[3][11:]
+					d['id'] = row[6]+'_'+row[0].split('/')[-1] #row[8]
 					d['image_hash'] = row[6]
 					d['image_type'] = row[1]
 					d['privacy'] = p #make this an option!
@@ -46,8 +46,8 @@ def local_res_parser(filename,p,i):
 					d['duration'] = 'temp_var' # row[9]
 				else:
 					d = {}
-					d['date'] = row[3][:11]+row[3][12:20]
-					d['id'] = row[0].split('/')[-1] #row[]
+					d['date'] = row[3][:11]+row[3][11:] #row[3][:10]+"'T'"+row[3][11:]
+					d['id'] = row[6]+'_'+row[0].split('/')[-1] #row[]
 					d['image_hash'] = row[6]
 					d['image_type'] = row[1]
 					d['privacy'] = p #make this an option!

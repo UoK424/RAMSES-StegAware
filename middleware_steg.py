@@ -19,17 +19,30 @@ from BDV.BDVScanner import BDV
 from OmniHide.OmniHide import omniHide
 
 
-def pushResults(token, results, p, i):
+def pushResults(token, usrid, results, priv, i):
 	r = []
 
-	oRes = utils.local_res_parser(results, p, i)
+	oRes = utils.local_res_parser(results, priv, i)
+	exists = swag.scan_list(token, usrid)
 	c = 0
+
 	for entry in oRes:
-		x = (swag.post_result(token, entry))
-		if x == '<Response [200]>':
-			c += 1
-		print(x)
-		r.append(x)
+		if any(a["id"] == entry["id"] for a in exists if 'id' in a):
+			print('update')
+			print(entry)
+			x = swag.update_result(token, entry, entry['id'])
+			if x == '<Response [200]>':
+				c += 1
+			print(x)
+			r.append(x)
+		else:
+			print('add new')
+			print(entry)
+			x = swag.post_result(token, entry)
+			if x == '<Response [200]>':
+				c += 1
+			print(x)
+			r.append(x)
 	print(str(c) + ' entries pushed to the RAMSES platform')
 
 	return r
@@ -62,11 +75,11 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 						for algo in v_algo:
 							if str(filename).lower().endswith('.mp4'):
 								if algo == 'OurSecret':
-									ourSecret(filename, csvwriter)
+									ourSecret(filename, file, csvwriter)
 								if algo == 'BDV':
-									BDV(filename, csvwriter)
+									BDV(filename, file, csvwriter)
 								if algo == 'OmniHide':
-									omniHide(filename)
+									omniHide(filename, file, csvwriter)
 								if algo == 'Openpuff':
 									subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
 
@@ -135,6 +148,7 @@ def deleteRecords(token, usrid, itemlist):
 	if itemlist == ['all']:
 		print('Deleting everything!')
 		for i in r:
+			print(i)
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp == '<Response [200]>':
 				c += 1

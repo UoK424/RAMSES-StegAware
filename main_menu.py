@@ -33,7 +33,6 @@ class Login(QtWidgets.QDialog):
         layout.addWidget(self.buttonLogin)
 
         self.b1 = QRadioButton("Public")
-        self.b1.setChecked(True)
         self.b1.toggled.connect(lambda: self.btnstate(self.b1))
         layout.addWidget(self.b1)
 
@@ -51,27 +50,31 @@ class Login(QtWidgets.QDialog):
         if b.text() == "Public":
             if b.isChecked() == True:
                 p = 'public'
+                #print(p)
 
         if b.text() == "Agency":
             if b.isChecked() == True:
                 p = 'agency'
+                #print(p)
 
         if b.text() == "Private":
             if b.isChecked() == True:
                 p = 'private'
+                #print(p)
 
     def handleLogin(self):
         global token
         global usrnm
+        global usrid
+
         usrnm = self.textName.text()
         temp = middleware_steg.authenticate(self.textName.text(), self.textPass.text())
         access_cred = temp.content
         if (temp.status_code == 200):
             access_cred = json.loads(access_cred.decode())
             token = access_cred["access_token"]
-            token_split = token.split('.')[1];
+            token_split = token.split('.')[1]
             x = json.loads(base64.b64decode(token_split + "=" * ((4 - len(token_split) % 4) % 4)))
-            global usrid
             usrid = x['sub']
             self.accept()
         else:
@@ -185,8 +188,7 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_4.setGeometry(QtCore.QRect(560, 375, 161, 51))
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
-
-
+        
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
 
@@ -234,10 +236,12 @@ class Ui_MainWindow(QMainWindow):
         global token
         global files
         global p
+        global usrid
 
         if self.checkBox_11.isChecked() == True:
-            login_page = Login()
-            login_page.exec_()
+            while p == '' or token == '':
+                login_page = Login()
+                login_page.exec_()
         
         # check image steg algorithms to be used
         if self.checkBox_3.isChecked() == True:
@@ -264,8 +268,7 @@ class Ui_MainWindow(QMainWindow):
         resPath = middleware_steg.run_tool(self.inpath, self.outpath, v_algo, i_algo, recurse)
 
         if self.checkBox_11.isChecked() == True:
-            global token
-            middleware_steg.pushResults(token, resPath, p, 'testMalware')
+            middleware_steg.pushResults(token, usrid, resPath, p, 'testMalware')
         
         #refreshAll( self )
 
@@ -290,14 +293,17 @@ class Ui_MainWindow(QMainWindow):
         #refreshAll( self )
 
     def uploadFiles(self):
-        if token == '':
+        global p
+        global token
+        global usrid
+
+        while p == '' or token == '':
             login_page = Login()
             login_page.exec_()
-
-        if token != '':
             App()
+
             for file in files:
-                middleware_steg.pushResults(token, file, 'public', 'testMalware_previous')
+                middleware_steg.pushResults(token, usrid, file, p, 'testMalware_previous')
 
 
     def deleteFiles(self):
