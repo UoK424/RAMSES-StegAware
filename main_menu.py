@@ -18,6 +18,12 @@ files = []
 usrid = ""
 p = ""
 
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiPixmaps'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiPixmaps, True)
+
 class Worker(QRunnable):
     def __init__(self, fn, *args, **kwargs):
         self.fn = fn
@@ -130,6 +136,9 @@ class App(QtWidgets.QWidget):
 
 
 class Ui_MainWindow(QMainWindow):
+    def __init__(self):
+        super(Ui_MainWindow, self).__init__()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1450, 600)
