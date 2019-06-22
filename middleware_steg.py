@@ -27,7 +27,7 @@ def pushResults(token, usrid, results, priv, i):
 	c = 0
 
 	for entry in oRes:
-		if any(a["id"] == entry["id"] for a in exists if 'id' in a):
+		if any(a["id"] == entry["id"] for a in exists if 'id' in a and entry['Steganography Present'] == 'Yes'):
 			print('update')
 			print(entry)
 			x = swag.update_result(token, entry, entry['id'])
@@ -83,14 +83,14 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 								if algo == 'Openpuff':
 									subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
 
-								metadata(filename, odir, seshId)
+								# metadata(filename, odir, seshId)
 
 						for algo in i_algo:
 							if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 								if algo == 'PixelKnot':
 									pKnot(filename, file, csvwriter)
 
-								metadata(filename, file, odir, seshId)
+					metadata(filename, file, odir, seshId)
 
 	elif rec == True:
 		for filename in Path(idir).glob('**/*.*'):
@@ -114,14 +114,14 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 									print(lines)
 									csvwriter.writerow([file, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
 
-							metadata(filename, odir, seshId)
+							# metadata(filename, odir, seshId)
 
 					for algo in i_algo:
 						if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 							if algo == 'PixelKnot':
 								pKnot(filename, file, csvwriter)
 
-							metadata(filename, file, odir, seshId)
+				metadata(filename, file, odir, seshId)
 
 	n = results_merge(odir, seshId)
 
@@ -168,9 +168,8 @@ def results_merge(odir, seshId):
 	a = pd.read_csv(str(odir) + '/' + str(seshId) + '_metaData.csv')
 	b = pd.read_csv(str(odir) + '/' + str(seshId) + '_stegResults.csv')
 	merged = a.merge(b, on='Filename')
+	#merged.sort_values(by=['Steganography Present'])
+	#merged.drop_duplicates(subset='Filename', keep='first', inplace=True)
 	merged.to_csv(mergeRes, index=False)
 
 	return mergeRes
-	# doesn't work yet, keep looking at ways to drop duplicates that do not have Steg
-	# df = pd.read_csv(str(odir) + '/' + str(seshId) + '_Results.csv').drop_duplicates(keep='first').reset_index()
-	# df.to_csv(str(odir) + '/' + str(seshId) + '_Results.csv', index=False)
