@@ -188,7 +188,7 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_4.setGeometry(QtCore.QRect(560, 375, 161, 51))
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
-        
+
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
 

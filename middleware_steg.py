@@ -31,7 +31,7 @@ def pushResults(token, usrid, results, priv, i):
 			print('update')
 			print(entry)
 			x = swag.update_result(token, entry, entry['id'])
-			if x == '<Response [200]>':
+			if x.status_code == '200':
 				c += 1
 			print(x)
 			r.append(x)
@@ -39,7 +39,7 @@ def pushResults(token, usrid, results, priv, i):
 			print('add new')
 			print(entry)
 			x = swag.post_result(token, entry)
-			if x == '<Response [200]>':
+			if x.status_code == '200':
 				c += 1
 			print(x)
 			r.append(x)

@@ -42,29 +42,30 @@ def post_result(token, result):
         return r
 
 
-def delete_result(token, id):
+def delete_result(token, i):
         headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {0}'.format(token),
         'Accept': 'application/json',
         }
 
-        r = requests.delete('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(id), headers=headers)
+        r = requests.delete('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(i), headers=headers)
+        # print(r.reason)
         return r
 
 
-def get_result(token, id):
+def get_result(token, i):
         headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {0}'.format(token),
         'Accept': 'application/json',
         }
 
-        r = requests.get('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(id), headers=headers)
+        r = requests.get('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(i), headers=headers)
         return r
 
 
-def update_result(token, result, id):
+def update_result(token, result, i):
         headers = {
         'Content-Type': 'application/json',
 		'Authorization': 'Bearer {0}'.format(token),
@@ -72,7 +73,7 @@ def update_result(token, result, id):
         }
 		
 
-        r = requests.post('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(id), headers=headers, data=json.dumps(result))
+        r = requests.post('https://ramses.treelogic.com/ramses-1.2.0/api/ramses/mf/steganography/'+str(i), headers=headers, data=json.dumps(result))
         #print(r.text)
         return r
 
