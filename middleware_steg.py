@@ -27,23 +27,23 @@ def pushResults(token, usrid, results, priv, i):
 	c = 0
 
 	for entry in oRes:
-		if any(a["id"] == entry["id"] for a in exists if 'id' in a and entry['Steganography Present'] == 'Yes'):
-			print('update')
+		if any(a["id"] == entry["id"] for a in exists if 'id' in a and 'Steganography Present' in a and entry['Steganography Present'] == 'Yes'):
+			print('\nUpdating record: ' + str(entry['id']))
 			print(entry)
 			x = swag.update_result(token, entry, entry['id'])
 			if x.status_code == '200':
 				c += 1
-			print(x)
+			print(str(x)+'\n')
 			r.append(x)
 		else:
-			print('add new')
-			print(entry)
+			print('\nAdd new record: ' + str(entry['id']))
+			#print(entry)
 			x = swag.post_result(token, entry)
 			if x.status_code == '200':
 				c += 1
-			print(x)
+			print(str(x)+'\n')
 			r.append(x)
-	print(str(c) + ' entries pushed to the RAMSES platform')
+	print(str(c) + ' entries pushed to the RAMSES platform\n-----------------------------------')
 
 	return r
 
@@ -111,7 +111,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 								with open('Results/OpenPuff.txt', 'r') as oRes:
 									lines = oRes.readlines()
-									print(lines)
+									#print(lines)
 									csvwriter.writerow([file, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
 
 							# metadata(filename, odir, seshId)
@@ -125,7 +125,7 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 	n = results_merge(odir, seshId)
 
-	print('Testing complete, please find results in ' + str(odir))
+	print('-----------------------------------\nTesting complete, please find results in ' + str(odir) + '\n')
 
 	return n
 
@@ -146,21 +146,21 @@ def deleteRecords(token, usrid, itemlist):
 	c = 0
 	r = swag.scan_list(token, usrid)
 	if itemlist == ['all']:
-		print('Deleting everything!')
+		print('-----------------------------------\nDeleting all owned records\n')
 		for i in r:
-			print(i)
+			#print(i)
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp == '<Response [200]>':
 				c += 1
-			print(str(resp) + ' : ' + str(i.get('id', i)))
-		print(str(c) + ' entries deleted from the RAMSES platform')
+			print('\n' + str(resp) + ' : ' + str(i.get('id', i)))
+		print('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
 	else:
 		for i in itemlist:
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp == '<Response [200]>':
 				c += 1
-			print(str(resp) + ' : ' + str(i.get('id', i)))
-		print(str(c) + ' entries deleted from the RAMSES platform')
+			print('\n' + str(resp) + ' : ' + str(i.get('id', i)))
+		print('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
 
 
 def results_merge(odir, seshId):

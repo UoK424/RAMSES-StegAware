@@ -1,5 +1,12 @@
 import csv 
 import json
+import sys
+
+
+def redirectToFile(text):
+	original = sys.stdoutsys.stdout = open('tmp_txt_store.txt', 'w')
+	print(text)
+	sys.stdout = original
 
 
 def dict_to_binary(the_dict):

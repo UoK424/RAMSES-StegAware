@@ -5,7 +5,7 @@
 # Created by: PyQt5 UI code generator 5.12.2
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QRunnable
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QRadioButton
 import os
 import json
@@ -18,12 +18,25 @@ files = []
 usrid = ""
 p = ""
 
+class Worker(QRunnable):
+    def __init__(self, fn, *args, **kwargs):
+        self.fn = fn
+        self.args = args
+        self.kwargs = kwargs
+        
+    @pyqtSlot()
+    def run(self):
+        self.fn(*self.args, **self.kwargs)
+
 
 class EmittingStream(QtCore.QObject):
     textWritten = QtCore.pyqtSignal(str)
 
     def write(self, text):
         self.textWritten.emit(str(text))
+
+    def flush(self):
+        sys.stdout.flush()
 
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -119,7 +132,7 @@ class App(QtWidgets.QWidget):
 class Ui_MainWindow(QMainWindow):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(1450, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
@@ -195,6 +208,13 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
+        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
+
+        #self.le = QtWidgets.QLineEdit(self.centralwidget)
+        #self.le.setGeometry(QtCore.QRect(800, 50, 600, 500))
+        self.te = QtWidgets.QTextEdit(self.centralwidget)
+        self.te.setGeometry(QtCore.QRect(800, 50, 600, 500))
+
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
 
@@ -207,15 +227,19 @@ class Ui_MainWindow(QMainWindow):
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def __del__(selfself):
-        sys.stdout = sys.__stdout__
+    def api(self):
+        worker = Worker(self.normalOutputWritten(sys.stdout))
+        self.threadpool.start(worker)
 
     def normalOutputWritten(self, text):
-        cursor = self.textEdit.textCursor()
-        cursor.movePosition(QtWidgets.QTextCursor.End)
+        cursor = self.te.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
         cursor.insertText(text)
-        self.textEdit.setTextCursor(cursor)
-        self.textEdit.ensureCursorVisible()
+        self.te.setTextCursor(cursor)
+        self.te.ensureCursorVisible()
+
+    def __del__(self):
+        sys.stdout = sys.__stdout__
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

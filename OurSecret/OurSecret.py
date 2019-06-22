@@ -13,5 +13,5 @@ def ourSecret(f, file, csvwriter):
             csvwriter.writerow([file, 'No', 'None', ''])
 
     end = time.time()
-    print(end - start)
+    #print(end - start)
 
