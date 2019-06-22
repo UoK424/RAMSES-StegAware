@@ -149,6 +149,8 @@ class Ui_MainWindow(QObject):
         MainWindow.setStatusBar(self.statusbar)
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setGeometry(QtCore.QRect(560, 375, 161, 51))
+        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
         self.inpath = os.getcwd() + "/TestMediaRam"
         self.outpath = os.getcwd() + "/Results"
@@ -158,6 +160,8 @@ class Ui_MainWindow(QObject):
         self.pushButton_2.clicked.connect(self.outSlot)     
         self.pushButton_3.clicked.connect(self.runTool)
         self.pushButton_4.clicked.connect(self.uploadFiles)
+        self.pushButton_4.clicked.connect(self.deleteFiles)
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -181,6 +185,7 @@ class Ui_MainWindow(QObject):
         self.pushButton_2.setText(_translate("MainWindow", "Output Directory"))
         self.pushButton_3.setText(_translate("MainWindow", "Run Tool"))
         self.pushButton_4.setText(_translate("MainWindow", "Upload Existing File"))
+        self.pushButton_5.setText(_translate("MainWindow", "Remove Records"))
         self.lineEdit_5.setText(_translate("MainWindow", str(os.getcwd()) + "/TestMediaRam"))
         self.lineEdit_4.setText(_translate("MainWindow", str(os.getcwd()) + "/Results"))
 
@@ -257,6 +262,10 @@ class Ui_MainWindow(QObject):
             App()
             for file in files:
                 middleware_steg.pushResults(token, file, 'public', 'testMalware_previous')
+
+
+    def deleteFiles(self):
+        return 0
 
 
 def refreshAll( self ):
