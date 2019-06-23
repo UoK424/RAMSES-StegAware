@@ -10,8 +10,10 @@ import pyexifinfo as p
 import os
 import pandas as pd
 import hashlib
+import sys
 
 from pathlib import Path
+from main_menu import Log
 
 from OurSecret.OurSecret import ourSecret
 from Pixelknot.PixelKnot import pKnot
@@ -19,8 +21,11 @@ from BDV.BDVScanner import BDV
 from OmniHide.OmniHide import omniHide
 
 
-def pushResults(token, usrid, results, priv, i):
+def pushResults(ui, token, usrid, results, priv, i):
 	r = []
+
+	ui.te.append('-----------------------------------\nPushing results to RAMSES platform...')
+	ui.te.repaint()
 
 	oRes = utils.local_res_parser(results, priv, i)
 	exists = swag.scan_list(token, usrid)
@@ -28,22 +33,27 @@ def pushResults(token, usrid, results, priv, i):
 
 	for entry in oRes:
 		if any(a["id"] == entry["id"] for a in exists if 'id' in a and 'Steganography Present' in a and entry['Steganography Present'] == 'Yes'):
-			print('\nUpdating record: ' + str(entry['id']))
-			print(entry)
+			ui.te.append('\nUpdating record: ' + str(entry['id']))
+			ui.te.repaint()
+			ui.te.append(entry)
+			ui.te.repaint()
+
 			x = swag.update_result(token, entry, entry['id'])
 			if x.status_code == '200':
 				c += 1
-			print(str(x)+'\n')
+			ui.te.append(str(x)+'\n')
+			ui.te.repaint()
 			r.append(x)
 		else:
-			print('\nAdd new record: ' + str(entry['id']))
-			#print(entry)
+			ui.te.append('\nAdd new record: ' + str(entry['id']))
+			ui.te.repaint()
 			x = swag.post_result(token, entry)
 			if x.status_code == '200':
 				c += 1
-			print(str(x)+'\n')
+			ui.te.append(str(x)+'\n')
 			r.append(x)
-	print(str(c) + ' entries pushed to the RAMSES platform\n-----------------------------------')
+	ui.te.append(str(c) + ' entries pushed to the RAMSES platform\n-----------------------------------')
+	ui.te.repaint()
 
 	return r
 
@@ -53,8 +63,11 @@ def authenticate(usrnm, password):
 	return r
 
 		
-def run_tool(idir, odir, v_algo, i_algo, rec):
+def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 	seshId = str(random.getrandbits(128))
+
+	ui.te.append('-----------------------------------\nProcessing media, please wait...')
+	ui.te.repaint()
 
 	with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='w') as results_file:
 		csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -69,6 +82,8 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 			for file in f:
 				filename = r + '/' + file
 				if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
+					ui.te.append('\nProcessing file: ' + str(filename))
+					ui.te.repaint()
 					with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 						csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -96,6 +111,8 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 		for filename in Path(idir).glob('**/*.*'):
 			head, file = os.path.split(filename)
 			if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
+				ui.te.append('\nProcessing file: ' + str(filename))
+				ui.te.repaint()
 				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 					for algo in v_algo:
@@ -125,7 +142,8 @@ def run_tool(idir, odir, v_algo, i_algo, rec):
 
 	n = results_merge(odir, seshId)
 
-	print('-----------------------------------\nTesting complete, please find results in ' + str(odir) + '\n')
+	ui.te.append('\nTesting complete, please find results in ' + str(odir) + '\n-----------------------------------')
+	ui.te.repaint()
 
 	return n
 
@@ -142,25 +160,29 @@ def metadata(f, file, odir, seshId):
 		m = p.get_json(f)
 		csvwriter.writerow([file, m[0]['File:FileType'], m[0]['File:FileSize'], m[0]['File:FileModifyDate'], m[0]['File:FileAccessDate'], m[0]['Composite:ImageSize'], hasher.hexdigest()])
 
-def deleteRecords(token, usrid, itemlist):
+def deleteRecords(ui, token, usrid, itemlist):
 	c = 0
 	r = swag.scan_list(token, usrid)
 	if itemlist == ['all']:
-		print('-----------------------------------\nDeleting all owned records\n')
+		ui.te.append('-----------------------------------\nDeleting all owned records\n')
+		ui.te.repaint()
 		for i in r:
-			#print(i)
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp == '<Response [200]>':
 				c += 1
-			print('\n' + str(resp) + ' : ' + str(i.get('id', i)))
-		print('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
+			ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
+			ui.te.repaint()
+		ui.te.append('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
+		ui.te.repaint()
 	else:
 		for i in itemlist:
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp == '<Response [200]>':
 				c += 1
-			print('\n' + str(resp) + ' : ' + str(i.get('id', i)))
-		print('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
+			ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
+			ui.te.repaint()
+		ui.te.append('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
+		ui.te.repaint()
 
 
 def results_merge(odir, seshId):
@@ -168,8 +190,6 @@ def results_merge(odir, seshId):
 	a = pd.read_csv(str(odir) + '/' + str(seshId) + '_metaData.csv')
 	b = pd.read_csv(str(odir) + '/' + str(seshId) + '_stegResults.csv')
 	merged = a.merge(b, on='Filename')
-	#merged.sort_values(by=['Steganography Present'])
-	#merged.drop_duplicates(subset='Filename', keep='first', inplace=True)
 	merged.to_csv(mergeRes, index=False)
 
 	return mergeRes

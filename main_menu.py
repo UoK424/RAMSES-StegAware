@@ -11,6 +11,7 @@ import os
 import json
 import base64
 import middleware_steg
+import sys
 
 token = ""
 usrnm = ""
@@ -24,25 +25,38 @@ if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiPixmaps'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiPixmaps, True)
 
-class Worker(QRunnable):
-    def __init__(self, fn, *args, **kwargs):
-        self.fn = fn
-        self.args = args
-        self.kwargs = kwargs
+#class Worker(QRunnable):
+#    def __init__(self, fn, *args, **kwargs):
+#        self.fn = fn
+#        self.args = args
+#        self.kwargs = kwargs
         
-    @pyqtSlot()
-    def run(self):
-        self.fn(*self.args, **self.kwargs)
+#    @pyqtSlot()
+#    def run(self):
+#        self.fn(*self.args, **self.kwargs)
 
 
-class EmittingStream(QtCore.QObject):
-    textWritten = QtCore.pyqtSignal(str)
+class Log(object):
+    def __init__(self, edit):
+        self.out = sys.stdout
+        self.textEdit = edit
 
-    def write(self, text):
-        self.textWritten.emit(str(text))
+    def write(self, message):
+        self.out.write(message)
+        self.textEdit.append(message)
 
     def flush(self):
-        sys.stdout.flush()
+        self.out.flush()
+
+
+#class EmittingStream(QtCore.QObject):
+#    textWritten = QtCore.pyqtSignal(str)
+
+#    def write(self, text):
+#        self.textWritten.emit(str(text))
+
+#    def flush(self):
+#        sys.stdout.flush()
 
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -217,10 +231,8 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
-        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
+        #sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
 
-        #self.le = QtWidgets.QLineEdit(self.centralwidget)
-        #self.le.setGeometry(QtCore.QRect(800, 50, 600, 500))
         self.te = QtWidgets.QTextEdit(self.centralwidget)
         self.te.setGeometry(QtCore.QRect(800, 50, 600, 500))
 
@@ -236,19 +248,19 @@ class Ui_MainWindow(QMainWindow):
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def api(self):
-        worker = Worker(self.normalOutputWritten(sys.stdout))
-        self.threadpool.start(worker)
+    #def api(self):
+        #worker = Worker(self.normalOutputWritten(sys.stdout))
+        #self.threadpool.start(worker)
 
-    def normalOutputWritten(self, text):
-        cursor = self.te.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertText(text)
-        self.te.setTextCursor(cursor)
-        self.te.ensureCursorVisible()
+   # def normalOutputWritten(self, text):
+   #     cursor = self.te.textCursor()
+   #     cursor.movePosition(QtGui.QTextCursor.End)
+   #     cursor.insertText(text)
+   #     self.te.setTextCursor(cursor)
+   #     self.te.ensureCursorVisible()
 
-    def __del__(self):
-        sys.stdout = sys.__stdout__
+   # def __del__(self):
+   #     sys.stdout = sys.__stdout__
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -313,10 +325,10 @@ class Ui_MainWindow(QMainWindow):
         if self.checkBox_5.isChecked() == True:
             recurse = True
 
-        resPath = middleware_steg.run_tool(self.inpath, self.outpath, v_algo, i_algo, recurse)
+        resPath = middleware_steg.run_tool(self, self.inpath, self.outpath, v_algo, i_algo, recurse)
 
         if self.checkBox_11.isChecked() == True:
-            middleware_steg.pushResults(token, usrid, resPath, p, 'testMalware')
+            middleware_steg.pushResults(self, token, usrid, resPath, p, 'testMalware')
         
         #refreshAll( self )
 
@@ -351,14 +363,14 @@ class Ui_MainWindow(QMainWindow):
             App()
 
             for file in files:
-                middleware_steg.pushResults(token, usrid, file, p, 'testMalware_previous')
+                middleware_steg.pushResults(self, token, usrid, file, p, 'testMalware_previous')
 
 
     def deleteFiles(self):
         itemlist = ['all']
         while True:
             if token != "":
-                middleware_steg.deleteRecords(token, usrid, itemlist)
+                middleware_steg.deleteRecords(self, token, usrid, itemlist)
                 break
             else:
                 login_page = Login()
