@@ -132,7 +132,7 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 						ui.te.append('\nProcessing file: ' + str(filename))
 						ui.te.repaint()
 
-						if 'OurSectret' in v_algo:
+						if 'OurSecret' in v_algo:
 							ourSecret(filename, file, csvwriter)
 						if 'BDV' in v_algo:
 							BDV(filename, file, csvwriter)
@@ -220,9 +220,11 @@ def stegExposeResultHandler(resultfile, csvwriter):
 
 		for line in res:
 			if c >= 4:
+				print(quad)
 				records.append(quad)
 				quad = []
-				c = 0
+				quad.append(line.rstrip())
+				c = 1
 			else:
 				quad.append(line.rstrip())
 				c += 1
