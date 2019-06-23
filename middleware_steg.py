@@ -32,26 +32,28 @@ def pushResults(ui, token, usrid, results, priv, i):
 	c = 0
 
 	for entry in oRes:
-		if any(a["id"] == entry["id"] for a in exists if 'id' in a and 'Steganography Present' in a and entry['Steganography Present'] == 'Yes'):
+		if any(a["image_hash"] == entry["image_hash"] for a in exists if 'image_hash' in a and 'Steganography Present' in a and entry['Steganography Present'] == 'Yes'):
 			ui.te.append('\nUpdating record: ' + str(entry['id']))
 			ui.te.repaint()
 			ui.te.append(entry)
 			ui.te.repaint()
 
 			x = swag.update_result(token, entry, entry['id'])
-			if x.status_code == '200':
+			if x.status_code == 200:
 				c += 1
 			ui.te.append(str(x)+'\n')
 			ui.te.repaint()
 			r.append(x)
-		else:
-			ui.te.append('\nAdd new record: ' + str(entry['id']))
+		elif not any(a["image_hash"] == entry["image_hash"] for a in exists if 'image_hash' in a):
+		#else:
+			ui.te.append('\nAdd new record: ' + str(entry['image_hash']))
 			ui.te.repaint()
 			x = swag.post_result(token, entry)
-			if x.status_code == '200':
+			if x.status_code == 200:
 				c += 1
 			ui.te.append(str(x)+'\n')
 			r.append(x)
+
 	ui.te.append(str(c) + ' entries pushed to the RAMSES platform\n-----------------------------------')
 	ui.te.repaint()
 
@@ -169,7 +171,7 @@ def deleteRecords(ui, token, usrid, itemlist):
 		for i in r:
 			print('\n'+str(i)+'\n')
 			resp = swag.delete_result(token, str(i.get('id', i)))
-			if resp == '<Response [200]>':
+			if resp.status_code == 200:
 				c += 1
 			ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
 			ui.te.repaint()
@@ -178,7 +180,7 @@ def deleteRecords(ui, token, usrid, itemlist):
 	else:
 		for i in itemlist:
 			resp = swag.delete_result(token, str(i.get('id', i)))
-			if resp == '<Response [200]>':
+			if resp.status_code == 200:
 				c += 1
 			ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
 			ui.te.repaint()

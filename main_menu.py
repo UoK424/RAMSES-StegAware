@@ -25,16 +25,6 @@ if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiPixmaps'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiPixmaps, True)
 
-#class Worker(QRunnable):
-#    def __init__(self, fn, *args, **kwargs):
-#        self.fn = fn
-#        self.args = args
-#        self.kwargs = kwargs
-        
-#    @pyqtSlot()
-#    def run(self):
-#        self.fn(*self.args, **self.kwargs)
-
 
 class Log(object):
     def __init__(self, edit):
@@ -47,16 +37,6 @@ class Log(object):
 
     def flush(self):
         self.out.flush()
-
-
-#class EmittingStream(QtCore.QObject):
-#    textWritten = QtCore.pyqtSignal(str)
-
-#    def write(self, text):
-#        self.textWritten.emit(str(text))
-
-#    def flush(self):
-#        sys.stdout.flush()
 
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):

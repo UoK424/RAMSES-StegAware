@@ -1,7 +1,6 @@
 import requests
 import json
 
-
 def authenticate(usrnm, password):
 	url = 'https://ramses.treelogic.com/auth/realms/ramses/protocol/openid-connect/token'
 	headers = {
@@ -89,6 +88,7 @@ def scan_list(token, usrid):
                 break
             else:
                 for i in e:
+                    print(i)
                     exists.append(i)
                     f = f+1
            
