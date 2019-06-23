@@ -101,7 +101,7 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 								if algo == 'OmniHide':
 									omniHide(filename, file, csvwriter)
 								#if algo == 'Openpuff':
-								#	subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
+								#	subprocess.check_call(['./OpenPuff/OPStart.sh', str(filename)])
 
 								# metadata(filename, odir, seshId)
 
@@ -109,7 +109,8 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 							if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 								if algo == 'PixelKnot':
 									pKnot(filename, file, csvwriter)
-
+								if algo == 'StegExpose':
+									subprocess.call(['java', '-jar', 'StegExpose/StegExpose.jar', str(idir)])
 					metadata(filename, file, odir, seshId)
 
 	elif rec == True:
@@ -129,7 +130,7 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 							if algo == 'OmniHide':
 								omniHide(filename, file, csvwriter)
 							#if algo == 'Openpuff':
-							#	subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
+							#	subprocess.check_call(['./OpenPuff/OPStart.sh', str(filename)])
 
 							#	with open('Results/OpenPuff.txt', 'r') as oRes:
 							#		lines = oRes.readlines()
