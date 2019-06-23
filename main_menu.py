@@ -340,10 +340,11 @@ class Ui_MainWindow(QMainWindow):
         while p == '' or token == '':
             login_page = Login()
             login_page.exec_()
-            App()
 
-            for file in files:
-                middleware_steg.pushResults(self, token, usrid, file, p, 'testMalware_previous')
+        App()
+
+        for file in files:
+            middleware_steg.pushResults(self, token, usrid, file, p, 'testMalware_previous')
 
 
     def deleteFiles(self):
@@ -370,7 +371,6 @@ def refreshAll( self ):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

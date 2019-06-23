@@ -88,7 +88,6 @@ def scan_list(token, usrid):
                 break
             else:
                 for i in e:
-                    print(i)
                     exists.append(i)
                     f = f+1
            
