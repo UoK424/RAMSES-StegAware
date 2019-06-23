@@ -180,9 +180,9 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton = QtWidgets.QPushButton(self.groupBox_4)
         self.pushButton.setGeometry(QtCore.QRect(10, 30, 131, 25))
         self.pushButton.setObjectName("pushButton")
-        self.checkBox_5 = QtWidgets.QCheckBox(self.groupBox_4)
-        self.checkBox_5.setGeometry(QtCore.QRect(10, 60, 221, 23))
-        self.checkBox_5.setObjectName("checkBox_5")
+        #self.checkBox_5 = QtWidgets.QCheckBox(self.groupBox_4)
+        #self.checkBox_5.setGeometry(QtCore.QRect(10, 60, 221, 23))
+        #self.checkBox_5.setObjectName("checkBox_5")
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox_4)
         self.pushButton_2.setGeometry(QtCore.QRect(10, 90, 131, 25))
         self.pushButton_2.setObjectName("pushButton_2")
@@ -261,7 +261,7 @@ class Ui_MainWindow(QMainWindow):
         self.groupBox_4.setTitle(_translate("MainWindow", "I/O Directories"))
         self.label_2.setText(_translate("MainWindow", "Custom Prefix"))
         self.pushButton.setText(_translate("MainWindow", "Input Directory"))
-        self.checkBox_5.setText(_translate("MainWindow", "Recursive Search for media"))
+        #self.checkBox_5.setText(_translate("MainWindow", "Recursive Search for media"))
         self.pushButton_2.setText(_translate("MainWindow", "Output Directory"))
         self.pushButton_3.setText(_translate("MainWindow", "Run Tool"))
         self.pushButton_4.setText(_translate("MainWindow", "Upload Existing File"))
@@ -305,8 +305,8 @@ class Ui_MainWindow(QMainWindow):
             v_algo.append("OurSecret")
 
         # check whether recursive search is enabled
-        if self.checkBox_5.isChecked() == True:
-            recurse = True
+        #if self.checkBox_5.isChecked() == True:
+        #    recurse = True
 
         resPath = middleware_steg.run_tool(self, self.inpath, self.outpath, v_algo, i_algo, recurse)
 
