@@ -167,6 +167,7 @@ def deleteRecords(ui, token, usrid, itemlist):
 		ui.te.append('-----------------------------------\nDeleting all owned records\n')
 		ui.te.repaint()
 		for i in r:
+			print('\n'+str(i)+'\n')
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp == '<Response [200]>':
 				c += 1

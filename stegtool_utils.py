@@ -1,6 +1,12 @@
 import csv 
 import json
 import sys
+import datetime
+
+
+def myConverter(o):
+	if isinstance(o, datetime.datetime):
+		return o.__str__()
 
 
 def redirectToFile(text):
@@ -34,6 +40,7 @@ def local_res_parser(filename,p,i):
 				if (row[1] == 'mp4'):
 					d = {}
 					d['date'] = row[3][:11]+row[3][11:] #row[3][:10]+"'T'"+row[3][11:]
+					print(d['date'])
 					d['id'] = row[6]+'_'+row[0].split('/')[-1] #row[8]
 					d['image_hash'] = row[6]
 					d['image_type'] = row[1]
