@@ -226,12 +226,14 @@ public class RunStegExpose {
 		else
 			if(stego){
 				//System.out.println(fileName);
+				System.out.println(fileName);
 				System.out.println("LSB Steganography");
 				System.out.println("yes");
 				System.out.println("Statistical Steganalysis");
 			}
 			else{
 				//System.out.println(fileName);
+				System.out.println(fileName);
 				System.out.println("None");
 				System.out.println("None");
 				System.out.println("None");
