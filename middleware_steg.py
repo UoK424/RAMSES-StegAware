@@ -100,8 +100,8 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 									BDV(filename, file, csvwriter)
 								if algo == 'OmniHide':
 									omniHide(filename, file, csvwriter)
-								if algo == 'Openpuff':
-									subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
+								#if algo == 'Openpuff':
+								#	subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
 
 								# metadata(filename, odir, seshId)
 
@@ -128,13 +128,13 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 								BDV(filename, file, csvwriter)
 							if algo == 'OmniHide':
 								omniHide(filename, file, csvwriter)
-							if algo == 'Openpuff':
-								subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
+							#if algo == 'Openpuff':
+							#	subprocess.call('echo "${}" | ./OpenPuff/OPStart.sh ' + str(filename), shell=True)
 
-								with open('Results/OpenPuff.txt', 'r') as oRes:
-									lines = oRes.readlines()
-									#print(lines)
-									csvwriter.writerow([file, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
+							#	with open('Results/OpenPuff.txt', 'r') as oRes:
+							#		lines = oRes.readlines()
+							#		#print(lines)
+							#		csvwriter.writerow([file, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
 
 							# metadata(filename, odir, seshId)
 
@@ -195,7 +195,11 @@ def results_merge(odir, seshId):
 	mergeRes = str(odir) + '/' + str(seshId) + '_Results.csv'
 	a = pd.read_csv(str(odir) + '/' + str(seshId) + '_metaData.csv')
 	b = pd.read_csv(str(odir) + '/' + str(seshId) + '_stegResults.csv')
-	merged = a.merge(b, on='Filename')
+	a.columns = a.columns.str.strip().str.lower().str.replace(' ', '_')
+	b.columns = b.columns.str.strip().str.lower().str.replace(' ', '_')
+	b = b.sort_values(['steganography_present']).drop_duplicates(['filename'], keep='last')
+
+	merged = a.merge(b, on='filename')
 	merged.to_csv(mergeRes, index=False)
 
 	return mergeRes
