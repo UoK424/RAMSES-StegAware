@@ -124,12 +124,14 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 		for filename in Path(idir).glob('**/*.*'):
 			head, file = os.path.split(filename)
 			if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
-				ui.te.append('\nProcessing file: ' + str(filename))
-				ui.te.repaint()
+
 				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
 					if str(filename).lower().endswith('.mp4'):
+						ui.te.append('\nProcessing file: ' + str(filename))
+						ui.te.repaint()
+
 						if 'OurSectret' in v_algo:
 							ourSecret(filename, file, csvwriter)
 						if 'BDV' in v_algo:
@@ -138,10 +140,17 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 							omniHide(filename, file, csvwriter)
 
 					if str(filename).lower().endswith('.jpg', '.jpeg', '.png'):
+						ui.te.append('\nProcessing file: ' + str(filename))
+						ui.te.repaint()
+
 						if 'PixelKnot' in i_algo:
 							pKnot(filename, file, csvwriter)
 
 				metadata(filename, file, odir, seshId)
+
+		if 'StegExpose' in i_algo:
+			ui.te.append('\nStegExpose does not support recursive mode at this time.\n')
+			ui.te.repaint()
 
 	n = results_merge(odir, seshId)
 
@@ -215,8 +224,8 @@ def stegExposeResultHandler(resultfile, csvwriter):
 				quad = []
 				c = 0
 			else:
-				quad.append(line)
+				quad.append(line.rstrip())
 				c += 1
 
 		for item in records:
-			csvwriter.writerow(item[0], item[2], item[1], item[3])
+			csvwriter.writerow([item[0], item[2], item[1], item[3]])
