@@ -110,7 +110,7 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 
 					metadata(filename, file, odir, seshId)
 
-		if 'StegExpose' in i_algo:
+		if 'StegExpose' in i_algo and str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
 			ui.te.append('\nExecuting StegExpose, file output suppressed.\n')
 			ui.te.repaint()
 			with open('result.txt', 'w') as stegResults:
