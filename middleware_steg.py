@@ -105,7 +105,7 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 							if 'PixelKnot' in i_algo:
 								ui.te.append('\nProcessing file: ' + str(filename))
 								ui.te.repaint()
-								
+
 								pKnot(filename, file, csvwriter)
 
 					metadata(filename, file, odir, seshId)
@@ -116,11 +116,9 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 			with open('result.txt', 'w') as stegResults:
 				subprocess.call(['java', '-jar', 'StegExpose/StegExpose.jar', str(idir)], stdout=stegResults)
 
-		with open('results.txt', 'r') as res:
-			stripped = (line.strip() for line in res)
-			lines = (line.split(',') for line in stripped if line)
-			csvwriter.writerow(lines)
-
+			with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
+				csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+				stegExposeResultHandler('result.txt', csvwriter)
 
 	elif rec == True:
 		for filename in Path(idir).glob('**/*.*'):
@@ -203,3 +201,22 @@ def results_merge(odir, seshId):
 	merged.to_csv(mergeRes, index=False)
 
 	return mergeRes
+
+
+def stegExposeResultHandler(resultfile, csvwriter):
+	with open(resultfile, 'r') as res:
+		quad = []
+		records = []
+		c = 0
+
+		for line in res:
+			if c >= 4:
+				records.append(quad)
+				quad = []
+				c = 0
+			else:
+				quad.append(line)
+				c += 1
+
+		for item in records:
+			csvwriter.writerow(item[0], item[2], item[1], item[3])
