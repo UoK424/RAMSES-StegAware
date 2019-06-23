@@ -87,31 +87,40 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 			for file in f:
 				filename = r + '/' + file
 				if str(filename).lower().endswith(('.jpg', '.jpeg', '.png', '.mp4')):
-					ui.te.append('\nProcessing file: ' + str(filename))
-					ui.te.repaint()
+
 					with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 						csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-						for algo in v_algo:
-							if str(filename).lower().endswith('.mp4'):
-								if algo == 'OurSecret':
-									ourSecret(filename, file, csvwriter)
-								if algo == 'BDV':
-									BDV(filename, file, csvwriter)
-								if algo == 'OmniHide':
-									omniHide(filename, file, csvwriter)
-								#if algo == 'Openpuff':
-								#	subprocess.check_call(['./OpenPuff/OPStart.sh', str(filename)])
+						if str(filename).lower().endswith('.mp4'):
+							ui.te.append('\nProcessing file: ' + str(filename))
+							ui.te.repaint()
+							if 'OurSecret' in v_algo:
+								ourSecret(filename, file, csvwriter)
+							if 'BDV' in v_algo:
+								BDV(filename, file, csvwriter)
+							if 'OmniHide' in v_algo:
+								omniHide(filename, file, csvwriter)
 
-								# metadata(filename, odir, seshId)
+						if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
+							if 'PixelKnot' in i_algo:
+								ui.te.append('\nProcessing file: ' + str(filename))
+								ui.te.repaint()
+								
+								pKnot(filename, file, csvwriter)
 
-						for algo in i_algo:
-							if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
-								if algo == 'PixelKnot':
-									pKnot(filename, file, csvwriter)
-								if algo == 'StegExpose':
-									subprocess.call(['java', '-jar', 'StegExpose/StegExpose.jar', str(idir)])
 					metadata(filename, file, odir, seshId)
+
+		if 'StegExpose' in i_algo:
+			ui.te.append('\nExecuting StegExpose, file output suppressed.\n')
+			ui.te.repaint()
+			with open('result.txt', 'w') as stegResults:
+				subprocess.call(['java', '-jar', 'StegExpose/StegExpose.jar', str(idir)], stdout=stegResults)
+
+		with open('results.txt', 'r') as res:
+			stripped = (line.strip() for line in res)
+			lines = (line.split(',') for line in stripped if line)
+			csvwriter.writerow(lines)
+
 
 	elif rec == True:
 		for filename in Path(idir).glob('**/*.*'):
@@ -121,28 +130,18 @@ def run_tool(ui, idir, odir, v_algo, i_algo, rec):
 				ui.te.repaint()
 				with open(str(odir) + '/' + str(seshId) + '_stegResults.csv', mode='a') as results_file:
 					csvwriter = csv.writer(results_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-					for algo in v_algo:
-						if str(filename).lower().endswith('.mp4'):
-							if algo == 'OurSecret':
-								ourSecret(filename, file, csvwriter)
-							if algo == 'BDV':
-								BDV(filename, file, csvwriter)
-							if algo == 'OmniHide':
-								omniHide(filename, file, csvwriter)
-							#if algo == 'Openpuff':
-							#	subprocess.check_call(['./OpenPuff/OPStart.sh', str(filename)])
 
-							#	with open('Results/OpenPuff.txt', 'r') as oRes:
-							#		lines = oRes.readlines()
-							#		#print(lines)
-							#		csvwriter.writerow([file, lines[0][:-1], lines[1][:-1], lines[2][:-1]])
+					if str(filename).lower().endswith('.mp4'):
+						if 'OurSectret' in v_algo:
+							ourSecret(filename, file, csvwriter)
+						if 'BDV' in v_algo:
+							BDV(filename, file, csvwriter)
+						if 'OmniHide' in v_algo:
+							omniHide(filename, file, csvwriter)
 
-							# metadata(filename, odir, seshId)
-
-					for algo in i_algo:
-						if str(filename).lower().endswith(('.jpg', '.jpeg', '.png')):
-							if algo == 'PixelKnot':
-								pKnot(filename, file, csvwriter)
+					if str(filename).lower().endswith('.jpg', '.jpeg', '.png'):
+						if 'PixelKnot' in i_algo:
+							pKnot(filename, file, csvwriter)
 
 				metadata(filename, file, odir, seshId)
 

@@ -41,6 +41,9 @@ class Log(object):
 class Login(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(Login, self).__init__(parent)
+
+        self.setWindowTitle("Login")
+
         self.textName = QtWidgets.QLineEdit(self, placeholderText="Username")
         self.textPass = QtWidgets.QLineEdit(self, placeholderText="Password")
         self.textPass.setEchoMode(QtWidgets.QLineEdit.Password)
