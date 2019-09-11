@@ -43,8 +43,12 @@ def pushResults(ui, token, usrid, results, priv, i):
 			x = swag.update_result(token, entry, a['id'])
 			if x.status_code == 200:
 				c += 1
-			ui.te.append(str(x)+'\n')
-			ui.te.repaint()
+			#ui.te.append(str(x)+'\n')
+				ui.te.append('Uploading ' + str(entry['image_hash']))
+				ui.te.repaint()
+			else:
+				ui.te.append('\n' + str(x))
+				ui.te.repaint()
 			r.append(x)
 		elif not any(a["image_hash"] == entry["image_hash"] for a in exists if 'id' in a and '.' not in a['id'] and 'image_hash' in a):
 		#else:
@@ -53,8 +57,12 @@ def pushResults(ui, token, usrid, results, priv, i):
 			x = swag.post_result(token, entry)
 			if x.status_code == 200:
 				c += 1
-			ui.te.append(str(x)+'\n')
-			ui.te.repaint()
+				# ui.te.append(str(x)+'\n')
+				ui.te.append('Uploading ' + str(entry['image_hash']))
+				ui.te.repaint()
+			else:
+				ui.te.append('\n' + str(x))
+				ui.te.repaint()
 			r.append(x)
 
 	ui.te.append(str(c) + ' entries pushed to the RAMSES platform\n-----------------------------------')
@@ -183,8 +191,12 @@ def deleteRecords(ui, token, usrid, itemlist):
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp.status_code == 200:
 				c += 1
-			ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
-			ui.te.repaint()
+				# ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
+				ui.te.append('\n' + 'Deleting record: ' + str(i.get('id', i)))
+				ui.te.repaint()
+			else:
+				ui.te.append('\n' + str(resp))
+				ui.te.repaint()
 		ui.te.append('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
 		ui.te.repaint()
 	else:
@@ -192,8 +204,12 @@ def deleteRecords(ui, token, usrid, itemlist):
 			resp = swag.delete_result(token, str(i.get('id', i)))
 			if resp.status_code == 200:
 				c += 1
-			ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
-			ui.te.repaint()
+			#ui.te.append('\n' + str(resp) + ' : ' + str(i.get('id', i)))
+				ui.te.append('\n' + 'Deleting record: ' + str(i.get('id', i)))
+				ui.te.repaint()
+			else:
+				ui.te.append('\n' + str(resp))
+				ui.te.repaint()
 		ui.te.append('\n' + str(c) + ' entries deleted from the RAMSES platform\n-----------------------------------')
 		ui.te.repaint()
 

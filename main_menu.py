@@ -214,6 +214,8 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_5.setGeometry(QtCore.QRect(560, 450, 161, 51))
 
+        self.pushButton_5.setEnabled(False)
+
         #sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
 
         self.te = QtWidgets.QTextEdit(self.centralwidget)
