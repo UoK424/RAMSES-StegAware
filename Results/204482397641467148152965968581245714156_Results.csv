@@ -1,0 +1,2 @@
+filename,file_type,file_size,file_modify_date,file_access_date,dimensions,sha1_hash,steganography_present,steganography_algorithm,signature
+Xiaomi.mp4,MP4,170 MB,2019:09:11 15:49:53+01:00,2019:09:11 15:50:37+01:00,1920x1080,e14b5dde05862e2a56ca3e8b0c143bdebc72b95e,Yes,BDV Steganography,fbead881250ff9
