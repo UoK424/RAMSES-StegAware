@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'main_menu.ui'
@@ -222,8 +224,12 @@ class Ui_MainWindow(QMainWindow):
         self.te = QtWidgets.QTextEdit(self.centralwidget)
         self.te.setGeometry(QtCore.QRect(800, 50, 600, 500))
 
-        self.inpath = os.getcwd() + "/TestMediaRam"
-        self.outpath = os.getcwd() + "/Results"
+        if "Desktop/RAMSES_StegAware" in os.getcwd():
+            self.inpath = os.getcwd() + "/TestMediaRam"
+            self.outpath = os.getcwd() + "/Results"
+        else:
+            self.inpath = os.getcwd() + "/Desktop/RAMSES_StegAware/TestMediaRam"
+            self.outpath = os.getcwd() + "/Desktop/RAMSES_StegAware/Results"
 
         self.retranslateUi(MainWindow)
         self.pushButton.clicked.connect(self.inSlot)
@@ -269,8 +275,12 @@ class Ui_MainWindow(QMainWindow):
         self.pushButton_3.setText(_translate("MainWindow", "Run Tool"))
         self.pushButton_4.setText(_translate("MainWindow", "Upload Existing File"))
         self.pushButton_5.setText(_translate("MainWindow", "Remove Records"))
-        self.lineEdit_5.setText(_translate("MainWindow", str(os.getcwd()) + "/TestMediaRam"))
-        self.lineEdit_4.setText(_translate("MainWindow", str(os.getcwd()) + "/Results"))
+        if "Desktop/RAMSES_StegAware" in os.getcwd():
+            self.lineEdit_5.setText(_translate("MainWindow", str(os.getcwd()) + "/TestMediaRam"))
+            self.lineEdit_4.setText(_translate("MainWindow", str(os.getcwd()) + "/Results"))
+        else:
+            self.lineEdit_5.setText(_translate("MainWindow", str(os.getcwd()) + "/Desktop/RAMSES_StegAware/TestMediaRam"))
+            self.lineEdit_4.setText(_translate("MainWindow", str(os.getcwd()) + "/Desktop/RAMSES_StegAware/Results"))
 
         
     @pyqtSlot( )

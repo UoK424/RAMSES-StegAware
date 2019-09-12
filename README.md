@@ -16,12 +16,11 @@ The following steps can be used for a quick setup of the tool.
 1.0	$cd Desktop  
 1.1	$git clone https://github.com/UoK424/RAMSES_StegAware.git  
 1.2 $sudo apt install python3-pip
-1.3	$sudo chmod -R 755 <Directory>
-1.4 $cd <Directory>
+1.4 $cd /RAMSES_StegAware
 1.5 $sudo bash ./setup.sh
 1.6	Run the tool with $sudo python3 main_menu.py
 
-If the setup.sh script doesn't work (or program has unmet dependencies after completion of that script), refer to the manual for set-by-step setup.  
+If the setup.sh script doesn't work (or program has unmet dependencies after completion of that script), refer to the manual for set-by-step setup.
 
 
 
