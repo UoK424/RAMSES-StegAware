@@ -2,10 +2,9 @@
 Version=1.0
 Name=StegAware
 Comment=This is my comment
-Exec=python3 /home/prometheus/Desktop/RAMSES_StegAware/main_menu.py
+Exec=python3 ~/Desktop/RAMSES_StegAware/main_menu.py
 Terminal=true
 Type=Application
 Categories=Utility;Application;
 Path=/home/prometheus/Desktop/RAMSES_StegAware/
 Icon=/home/prometheus/Multimedia_Tool_Image/src/qtInterface/icons/ramses_icon.png
-
