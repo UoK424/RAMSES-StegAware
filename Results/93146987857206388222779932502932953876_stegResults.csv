@@ -1,0 +1,24 @@
+Filename,Steganography Present,Steganography Algorithm,Signature
+red_tower_copy.png,No,None,
+20160113_132618.jpg_114458435818186.jpg,No,None,
+compromised_banner_pixelknot.jpg,Yes,PixelKnot Steganography,ffe000104a464946000101000001
+Pixelknot (6).jpg,Yes,PixelKnot Steganography,ffe000104a464946000101000001
+stego_6672108499_85c582a7f9.png,No,None,
+stego_6672542201_532f70bffe.png,No,None,
+BDV(3).MP4,No,None,
+BDV(3).MP4,Yes,BDV Steganography,fbead881250ff9
+BDV(3).MP4,No,None,
+clean_7228374452_8f743dc3d4_z.png,No,None,
+OmniHide(3).MP4,No,None,
+OmniHide(3).MP4,No,None,
+OmniHide(3).MP4,Yes,OmniHide Steganography,null byte insertion
+Sp_D_CRN_A_cha0077_pla0022_0382.jpg,No,None,
+IMG_20131127_103907.jpg.jpg,Yes,PixelKnot Steganography,ffe000104a464946000101000001
+20160113_132618.jpg_114458435818186.jpg,None,None,None
+IMG_20131127_103907.jpg.jpg,None,None,None
+Pixelknot (6).jpg,None,None,None
+Sp_D_CRN_A_cha0077_pla0022_0382.jpg,None,None,None
+clean_7228374452_8f743dc3d4_z.png,None,None,None
+compromised_banner_pixelknot.jpg,None,None,None
+red_tower_copy.png,None,None,None
+stego_6672108499_85c582a7f9.png,yes,LSB Steganography,Statistical Steganalysis

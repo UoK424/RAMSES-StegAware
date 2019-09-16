@@ -1,7 +1,11 @@
 [Desktop Entry]
 Version=1.0
-Type=Application
-Terminal=true
-Exec=sudo python3 /RAMSES_StegAware/main_menu.py
 Name=StegAware
-Icon=gnome-panel-launcher
+Comment=This is my comment
+Exec=python3 /home/prometheus/Desktop/RAMSES_StegAware/main_menu.py
+Terminal=true
+Type=Application
+Categories=Utility;Application;
+Path=/home/prometheus/Desktop/RAMSES_StegAware/
+Icon=/home/prometheus/Multimedia_Tool_Image/src/qtInterface/icons/ramses_icon.png
+
