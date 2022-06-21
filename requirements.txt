@@ -1,5 +1,5 @@
 requests==2.18.4
 PyQt5==5.13.0
-numpy==1.17.2
+numpy==1.22.0
 pandas==0.25.1
 pyexifinfo==0.4.0
